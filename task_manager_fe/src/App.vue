@@ -1,27 +1,34 @@
 <template>
-  <div class="container p-2" id="app">
-    <!-- Side Bar -->
-    <div class="col-2">
-    </div>
-
-    <!-- Main Body -->
-    <div class="col-8">
-      <InternForm/>
-    </div>
-
-    <!-- Second Part -->
-    <div class="col-2">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-2">
+        <div class="row">
+          <SideBar/>
+        </div>
+      </div>
+      <div class="col-10 p-3">
+        <div class="row">
+          <NavBar/>
+        </div>
+        <div class="row">
+          <DepartmentTasks/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import InternForm from './components/InternForm.vue'
+import NavBar from './components/NavBar.vue'
+import SideBar from './components/SideBar.vue'
+import DepartmentTasks from './components/DepartmentTasks.vue'
 
 export default {
   name: 'App',
   components: {
-    InternForm
+    NavBar,
+    DepartmentTasks,
+    SideBar
   }
 }
 </script>
