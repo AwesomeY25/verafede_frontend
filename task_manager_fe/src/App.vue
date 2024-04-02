@@ -11,7 +11,7 @@
           <NavBar/>
         </div>
         <div class="row">
-          <DepartmentTasks/>
+          <InternProfile/>
         </div>
       </div>
     </div>
@@ -21,13 +21,13 @@
 <script>
 import NavBar from './components/NavBar.vue'
 import SideBar from './components/SideBar.vue'
-import DepartmentTasks from './components/DepartmentTasks.vue'
+import InternProfile from './components/InternProfile.vue';
 
 export default {
   name: 'App',
   components: {
     NavBar,
-    DepartmentTasks,
+    InternProfile,
     SideBar
   }
 }

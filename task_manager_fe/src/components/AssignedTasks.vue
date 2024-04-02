@@ -1,15 +1,15 @@
 <template>
   <div>
-    <h1>Task Assignments</h1>
-    <table>
+    <h2>Task Assignments</h2>
+    <table class="table" id="assigned_tasks">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Intern ID</th>
-          <th>Task ID</th>
-          <th>Task Status</th>
-          <th>Date Started</th>
-          <th>File Submission</th>
+          <th scope="col">ID</th>
+          <th scope="col">Intern ID</th>
+          <th scope="col">Task ID</th>
+          <th scope="col">Task Status</th>
+          <th scope="col">Date Started</th>
+          <th scope="col">File Submission</th>
         </tr>
       </thead>
       <tbody>
@@ -41,3 +41,31 @@ export default {
   }
 };
 </script>
+
+<style>
+h2 {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: bold;
+  color: #F27036;
+}
+#assigned_tasks th {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  background-color: #EA580C;
+  color: #F8FAFC;
+}
+#assigned_tasks td:nth-child(1) {
+  text-align: center;
+  font-weight: bold;
+}
+#assigned_tasks td {
+  text-align: center;
+}
+#assigned_tasks td:nth-child(1) {
+  font-weight: bold;
+}
+</style>

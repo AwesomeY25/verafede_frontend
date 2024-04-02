@@ -1,30 +1,30 @@
 <!-- Edit based on the applicable data to fetch -->
 
 <template>
-    <div>
-      <h1>{{ title }}</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Description</th>
-            <th>Academic Workload</th>
-            <th>Other Commitments</th>
-            <th>Date Filed</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="concern in concerns" :key="concern.concern_id">
-            <td>{{ concern.concern_id }}</td>
-            <td>{{ concern.concern_description }}</td>
-            <td>{{ concern.academic_workload }}</td>
-            <td>{{ concern.other_commitments }}</td>
-            <td>{{ formatDate(concern.date_filed) }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </template>
+  <div>
+    <h2>All Concerns</h2>
+    <table class="table" id="all_concerns">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Description</th>
+          <th scope="col">Academic Workload</th>
+          <th scope="col">Other Commitments</th>
+          <th scope="col">Date Filed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="concern in concerns" :key="concern.concern_id">
+          <td>{{ concern.concern_id }}</td>
+          <td>{{ concern.concern_description }}</td>
+          <td>{{ concern.academic_workload }}</td>
+          <td>{{ concern.other_commitments }}</td>
+          <td>{{ formatDate(concern.date_filed) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
   
   <script>
   export default {
@@ -45,3 +45,28 @@
     },
   };
   </script>
+
+<style>
+h2 {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: bold;
+  color: #F27036;
+}
+#all_concerns th {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  background-color: #EA580C;
+  color: #F8FAFC;
+}
+#all_concerns td:nth-child(1) {
+  text-align: center;
+  font-weight: bold;
+}
+#all_concerns td:nth-child(5) {
+  text-align: center;
+}
+</style>
