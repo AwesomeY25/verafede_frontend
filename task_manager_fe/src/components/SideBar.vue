@@ -10,32 +10,37 @@
       <div class="sidebar-body">
         <ul>
           <li class="sidebar-item">
-            <router-link to="/">
+            <a href="#" @click.prevent="selectComponent('intern-profile')">
               My Profile
-            </router-link>
+            </a>
           </li>
           <li class="sidebar-item">
-            <a href="#">
+            <a href="#" @click.prevent="selectComponent('verify-interns')">
+              Verify Interns
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" @click.prevent="selectComponent('all-interns')">
               All Interns
             </a>
           </li>
           <li class="sidebar-item">
-            <a href="#">
+            <a href="#" @click.prevent="selectComponent('department-tasks')">
               All Tasks
             </a>
           </li>
           <li class="sidebar-item">
-            <a href="#">
+            <a href="#" @click.prevent="selectComponent('generate-report')">
               Workload Overview
             </a>
           </li>
           <li class="sidebar-item">
-            <a href="#">
+            <a href="#" @click.prevent="selectComponent('concern-form')">
               Raise Concerns
             </a>
           </li>
           <li class="sidebar-item">
-            <a href="#">
+            <a href="#" @click.prevent="selectComponent('intern-form')">
               Log Out
             </a>
           </li>
@@ -56,6 +61,11 @@ export default {
     sidebarToggle: {
       type: Function,
       default: null
+    }
+  },
+  methods: {
+    selectComponent(componentName) {
+      this.$emit('component-selected', componentName);
     }
   }
 }

@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-2">
         <div class="row">
-          <SideBar/>
+          <SideBar @component-selected="changeComponent"/>
         </div>
       </div>
       <div class="col-10 p-3">
@@ -11,7 +11,7 @@
           <NavBar/>
         </div>
         <div class="row">
-          <InternProfile/>
+          <component :is="currentComponent" />
         </div>
       </div>
     </div>
@@ -22,13 +22,35 @@
 import NavBar from './components/NavBar.vue'
 import SideBar from './components/SideBar.vue'
 import InternProfile from './components/InternProfile.vue';
+import VerifyInterns from './components/VerifyInterns.vue';
+import AllInterns from './pages/AllInterns.vue';
+import DepartmentTasks from './components/DepartmentTasks.vue';
+import GenerateReport from './pages/GenerateReport.vue';
+import ConcernForm from './forms/ConcernForm.vue';
+import InternForm from './forms/InternForm.vue';
 
 export default {
   name: 'App',
   components: {
     NavBar,
+    SideBar,
     InternProfile,
-    SideBar
+    VerifyInterns,
+    AllInterns,
+    DepartmentTasks,
+    GenerateReport,
+    ConcernForm,
+    InternForm
+  },
+  data() {
+    return {
+      currentComponent: 'MyProfile'
+    }
+  },
+  methods: {
+    changeComponent(componentName) {
+      this.currentComponent = componentName;
+    }
   }
 }
 </script>
