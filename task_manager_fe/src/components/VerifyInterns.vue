@@ -3,9 +3,7 @@
       <!-- for elements above table -->
       <div class="d-flex">
         <div class="p-2" id="header">
-          <h3>
-            New Intern Profiles
-          </h3>
+          <h3 style="color: #F27036;">New Intern Profiles</h3>
         </div>
         <!-- kebab menu -->
         <div class="p-2">
@@ -74,10 +72,10 @@
             <td>
               <div class="row">
                 <div class="col">
-                  <button type="button" class="btn btn-success mx-1" @click="verifyIntern(intern.intern_id)">
+                  <button type="button" class="btn btn-success mx-1" @click="verifyIntern(intern.intern_id)" id="verify_btn">
                     Verify
                   </button>
-                  <button type="button" class="btn btn-danger" @click="declineIntern(intern.intern_id)">
+                  <button type="button" class="btn btn-danger" @click="declineIntern(intern.intern_id)" id="decline_btn">
                     Decline
                   </button>
                 </div>
@@ -237,26 +235,127 @@
   };
   </script>
   
-  <style>
-  /* Add your styles here */
-  .table {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  
-  .table thead th {
-    text-align: center;
-    background-color: #EA580C;
-    color: #F8FAFC;
-  }
-  
-  .table tbody td {
-    text-align: center;
-  }
-  
-  .table tbody td:nth-child(2) {
-    text-align: left;
-  }
-  
-  </style>
+<style>
+/* Add your styles here */
+#header > h3 {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: bold;
+}
+#kebab_menu {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: bold;
+  background-color: #FFFFFF;
+  border-color: #FFFFFF;
+  color: rgba(242, 112, 54, .7);
+  margin: 0 auto;
+  padding: 0;
+}
+#kebab_menu:hover {
+  background-color: #cccccc;
+}
+#search > button {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #484848;
+  font-size: 11px;
+  background-color: rgba(196,69, 69, .4);
+  border-color: #C44545;
+  height: 30px;
+}
+#search > div > input {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  border-color: #C44545;
+  border-radius: 6px 0px 0px 6px;
+  width: 200px;
+  height: 30px;
+}
+#search > div > input:focus {
+  outline: none !important;
+  border-color: #C44545;
+  box-shadow: 0 0 10px #C44545;
+}
+.table {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.table thead th {
+  text-align: center;
+  background-color: #EA580C;
+  color: #F8FAFC;
+}
+#sort_btn {
+  text-align: center;
+  background-color: #EA580C;
+  border-color: #EA580C;
+  color: #F8FAFC;
+  width: 30px;
+  margin: 0 auto;
+  padding: 0;
+}
+#sort_btn:hover {
+  background-color: #a94c1b;
+}
+.table tbody td {
+  text-align: center;
+}
+.table tbody td:nth-child(2) {
+  text-align: left;
+}
+#verify_btn {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  width: 80px;
+  height: 30px;
+  margin: 0 auto;
+  padding: 0;
+  background-color: #22C55E;
+  border-color: #22C55E;
+}
+#verify_btn:hover {
+  background-color: #28914f;
+}
+#decline_btn {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  width: 80px;
+  height: 30px;
+  margin: 0 auto;
+  padding: 0;
+  background-color: #EF4444;
+  border-color: #EF4444;
+}
+#decline_btn:hover {
+  background-color: #ce2828;
+}
+.page-item > a {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; 
+  color: #000000;
+}
+.pagination a:active {
+  background-color: #D78888;
+  color: #F8FAFC;
+}
+.pagination a:focus {
+  background-color: #FFFFFF;
+  color: #000000;
+  box-shadow: 0 0 0px;
+}
+.pagination a:hover:not(:active) {
+  background-color: #ddd;
+  color: #000000;
+}
+</style>

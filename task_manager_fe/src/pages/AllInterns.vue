@@ -1,72 +1,40 @@
 <template>
   <div>
-    <h1>{{ title }}</h1>
+    <h2 id="h2">{{ title }}</h2>
 
 
-    <div class="p-2 d-flex align-items-center">
-      <div class="dropdown me-2">
-        <ul class="dropdown-menu" aria-labelledby="kebab_menu">
-          <li><a class="dropdown-item" href="#">Select All</a></li>
-          <li><a class="dropdown-item" href="#">Deselect All</a></li>
-        </ul>
-      </div>
-
-      <div class="mb-3 me-2">
-        <label for="workload" class="form-label">Intern Status</label>
-        <ul class="dropdown-menu" aria-labelledby="kebab_menu">
-          <li><a class="dropdown-item" href="#">Select All</a></li>
-          <li><a class="dropdown-item" href="#">Deselect All</a></li>
-        </ul>
-        <button type="button" class="btn btn-light" id="kebab_menu" data-bs-toggle="dropdown" aria-expanded="false">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-          </svg>
-          <i class="bi bi-three-dots-vertical"></i>
-        </button>
-      </div>
-
-      <div class="mb-3 me-2">
-        <label for="start_date" class="form-label">Start Date</label>
-        <ul class="dropdown-menu" aria-labelledby="kebab_menu">
-          <li><a class="dropdown-item" href="#">Select All</a></li>
-          <li><a class="dropdown-item" href="#">Deselect All</a></li>
-        </ul>
-        <button type="button" class="btn btn-light" id="kebab_menu" data-bs-toggle="dropdown" aria-expanded="false">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-          </svg>
-          <i class="bi bi-three-dots-vertical"></i>
-        </button>
-      </div>
-
-      <div class="mb-3">
-        <label for="end_date" class="form-label">End Date</label>
-        <ul class="dropdown-menu" aria-labelledby="kebab_menu">
-          <li><a class="dropdown-item" href="#">Select All</a></li>
-          <li><a class="dropdown-item" href="#">Deselect All</a></li>
-        </ul>
-        <button type="button" class="btn btn-light" id="kebab_menu" data-bs-toggle="dropdown" aria-expanded="false">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-          </svg>
-          <i class="bi bi-three-dots-vertical"></i>
-        </button>
-      </div>
-
-      <div class="mb-3">
-        <label for="end_date" class="form-label">Department</label>
-        <ul class="dropdown-menu" aria-labelledby="kebab_menu">
-          <li><a class="dropdown-item" href="#">Select All</a></li>
-          <li><a class="dropdown-item" href="#">Deselect All</a></li>
-        </ul>
-        <button type="button" class="btn btn-light" id="kebab_menu" data-bs-toggle="dropdown" aria-expanded="false">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-          </svg>
-          <i class="bi bi-three-dots-vertical"></i>
-        </button>
-      </div>
-    </div>
+    <form>
+        <div class="d-flex flex-row" id="filters">
+            <div class="p-2">
+                <label for="workload_filter" class="form-label">Intern Status</label>
+                <select class="form-select" id="workload_filter" name="workload_filter">
+                    <option selected>All</option>
+                    <option>Active</option>
+                    <option>Inactive</option>
+                    <option>Onboarded</option>
+                    <option>Offboarded</option>
+                </select>
+            </div>
+            <div class="p-2">
+                <label for="start_date_filter" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="start_date_filter" name="start_date_filter">
+            </div>
+            <div class="p-2">
+                <label for="end_date_filter" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="end_date_filter" name="end_date_filter">
+            </div>
+            <div class="p-2">
+                <label for="workload_filter" class="form-label">Department</label>
+                <select class="form-select" id="workload_filter" name="workload_filter">
+                    <option selected>All</option>
+                    <option>Operations</option>
+                    <option>Human Resources</option>
+                    <option>Information Technology</option>
+                    <option>Finance</option>
+                </select>
+            </div>
+        </div>
+    </form>
 
 
 
@@ -131,24 +99,76 @@ export default {
 
 <style>
 /* Add your styles here */
+#h2 {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: bold;
+  color: #F27036;
+}
 .table {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+#filters {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 13px;
+  color: #484848;
+  display: flex; 
+  align-items: center;
+}
+#filters > div {
+  display: flex; 
+  align-items: center;
+}
+#filters > div > select {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 12px;
+  color: #484848;
+  background-color: rgba(238, 81, 79, .24);
+  border-color: rgba(238, 81, 79, .24);
+  height: 30px;
+  width: 120px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+#filters > div > select:focus {
+  outline: none !important;
+  border-color: rgba(238, 81, 79, .24);
+  box-shadow: 0 0 10px rgba(238, 81, 79, .24);
+}
+#filters > div > input {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 12px;
+  color: #484848;
+  background-color: rgba(238, 81, 79, .24);
+  border-color: rgba(238, 81, 79, .24);
+  height: 30px;
+  width: 120px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+#filters > div > input:focus {
+  outline: none !important;
+  border-color: rgba(238, 81, 79, .24);
+  box-shadow: 0 0 10px rgba(238, 81, 79, .24);
+}
 .table thead th {
   text-align: center;
   background-color: #EA580C;
   color: #F8FAFC;
 }
-
 .table tbody td {
   text-align: center;
 }
-
 .table tbody td:nth-child(2) {
   text-align: left;
 }
-
 </style>

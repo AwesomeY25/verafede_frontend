@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <h2>All Concerns</h2>
+    <h2 id="h2">All Concerns</h2>
     <table class="table" id="all_concerns">
       <thead>
         <tr>
@@ -47,7 +47,7 @@
   </script>
 
 <style>
-h2 {
+#h2 {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
