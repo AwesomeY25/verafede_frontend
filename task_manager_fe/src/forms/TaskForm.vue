@@ -1,5 +1,6 @@
 <template>
-  <div class="container mt-5">
+  <h2 id="h2">Create New Task</h2>
+  <div class="container">
     <form @submit.prevent="submitTask" id="taskForm">
       <div class="mb-3">
         <label for="task_name" class="form-label">Task Name:</label>
@@ -57,7 +58,16 @@
         <input v-model="taskData.file_submission" type="url" class="form-control" id="fileSubmission" placeholder="https://docs.google.com/document/d/1ylYNmUY3FLdTlAEmfJrR6O3VBlKfngh2qQOtiZ_R8EU/edit" />
       </div>
 
-      <button type="submit" class="btn btn-primary">Submit Task</button>
+      <div class="col mt-5 px-2" id="buttons">
+          <div class="row d-inline-flex align-self-end m-2">
+              <div class="col mx-auto" id="cancel_btn">
+                  <button class="btn btn-outline-primary mb-3">Cancel</button>
+              </div>
+              <div class="col mx-auto" id="create_btn">
+                  <button type="submit" class="btn btn-primary">Create Task</button>
+              </div>
+          </div>
+      </div>
     </form>
   </div>
 </template>
@@ -133,4 +143,52 @@ export default {
 </script>
 
 <style>
+#h2 {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: bold;
+  text-align: center;
+  color: #F27036;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+#buttons {
+  text-align: center;
+}
+#cancel_btn > button {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: bold;
+  color: #52525C;
+  font-size: 14px;
+  border-color: #52525C;
+  width: 300px;
+  height: 38px;
+}
+#cancel_btn > button:hover {
+  background-color: #D1D9E0;
+  border-color: #52525C;
+  width: 300px;
+  height: 38px;
+}
+#create_btn > button {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: bold;
+  color: #F8FAFC;
+  font-size: 14px;
+  background-color: #EA580C;
+  border-color: #EA580C;
+  width: 300px;
+  height: 38px;
+}
+#create_btn > button:hover {
+  background-color: #d24f0a;
+  border-color: #d24f0a;
+  width: 300px;
+  height: 38px;
+}
 </style>

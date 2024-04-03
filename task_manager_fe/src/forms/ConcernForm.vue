@@ -135,6 +135,12 @@ export default {
   width: 300px;
   height: 38px;
 }
+#cancel_btn > button:hover {
+  background-color: #D1D9E0;
+  border-color: #52525C;
+  width: 300px;
+  height: 38px;
+}
 #submit_btn > button {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -144,6 +150,12 @@ export default {
   font-size: 14px;
   background-color: #EA580C;
   border-color: #EA580C;
+  width: 300px;
+  height: 38px;
+}
+#submit_btn > button:hover {
+  background-color: #d24f0a;
+  border-color: #d24f0a;
   width: 300px;
   height: 38px;
 }
