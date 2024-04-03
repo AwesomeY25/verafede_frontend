@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="taskAssignment in taskAssignments" :key="taskAssignment.id" @click="redirectToTaskDetails(taskAssignment.id)">
+        <tr v-for="taskAssignment in taskAssignments" :key="taskAssignment.id" @click="openModal(taskAssignment)">
           <td>{{ taskAssignment.id }}</td>
           <td>{{ taskAssignment.intern_id }}</td>
           <td>{{ taskAssignment.task_id }}</td>
@@ -23,15 +23,33 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- Modal -->
+    <div class="modal" :class="{ 'is-active': showModal }">
+      <div class="modal-background" @click="closeModal"></div>
+      <div class="modal-content">
+        <div class="box">
+          <task-details :task="selectedTask" />
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
+    </div>
   </div>
 </template>
 
 <script>
+import TaskDetails from './TaskDetails.vue';
+
 export default {
   name: 'AssignedTasks',
+  components: {
+    TaskDetails
+  },
   data() {
     return {
-      taskAssignments: []
+      taskAssignments: [],
+      showModal: false,
+      selectedTask: null
     };
   },
   async created() {
@@ -47,8 +65,13 @@ export default {
         console.error('Error fetching task assignments:', error);
       }
     },
-    redirectToTaskDetails(taskAssignmentId) {
-      this.$router.push({ name: 'TaskDetails', params: { id: taskAssignmentId } });
+    openModal(taskAssignment) {
+      this.selectedTask = taskAssignment;
+      this.showModal = true;
+    },
+    closeModal() {
+      this.selectedTask = null;
+      this.showModal = false;
     }
   }
 };

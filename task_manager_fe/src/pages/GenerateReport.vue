@@ -58,32 +58,16 @@
                         <i class="bi bi-sort-up"></i>
                     </button>
                 </th>
-                <th scope="col">Department</th>
                 <th scope="col">Start Date</th>
                 <th scope="col">End Date</th>
                 <th scope="col">Week Capacity</th>
             </thead>
             <tbody>
-                <tr>
-                    <td>Earl Patrick Melchor</td>
-                    <td>Finance</td>
-                    <td>August 5, 2023</td>
-                    <td>October 5, 2023</td>
-                    <td>Max Capacity</td>
-                </tr>
-                <tr>
-                    <td>David Ken Del Mundo</td>
-                    <td>HR</td>
-                    <td>August 5, 2023</td>
-                    <td>October 5, 2023</td>
-                    <td>In Capacity</td>
-                </tr>
-                <tr>
-                    <td>Reign Rey</td>
-                    <td>Finance</td>
-                    <td>August 5, 2023</td>
-                    <td>October 5, 2023</td>
-                    <td>Underload</td>
+              <tr v-for="workload in workloads" :key="workload.week_date">
+                    <td>{{ workload.intern_name }}</td>
+                    <td>{{ workload.start_date }}</td>
+                    <td>{{ workload.end_date }}</td>
+                    <td>{{ workload.week_capacity }}</td>
                 </tr>
             </tbody>
         </table>
@@ -91,6 +75,27 @@
 </template>
 
 <script>
+export default {
+    data() {
+        return {
+            workloads: []
+        };
+    },
+    async created() {
+        await this.fetchWorkloads();
+    },
+    methods: {
+        async fetchWorkloads() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/workloads/');
+                const data = await response.json();
+                this.workloads = data;
+            } catch (error) {
+                console.error('Error fetching workloads:', error);
+            }
+        }
+    }
+};
 </script>
 
 <style>
