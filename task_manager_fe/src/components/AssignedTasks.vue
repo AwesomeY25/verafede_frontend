@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="taskAssignment in taskAssignments" :key="taskAssignment.id">
+        <tr v-for="taskAssignment in taskAssignments" :key="taskAssignment.id" @click="redirectToTaskDetails(taskAssignment.id)">
           <td>{{ taskAssignment.id }}</td>
           <td>{{ taskAssignment.intern_id }}</td>
           <td>{{ taskAssignment.task_id }}</td>
@@ -35,9 +35,21 @@ export default {
     };
   },
   async created() {
-    const response = await fetch('http://127.0.0.1:8000/tasks/assigned');
-    const data = await response.json();
-    this.taskAssignments = data;
+    await this.fetchTaskAssignments();
+  },
+  methods: {
+    async fetchTaskAssignments() {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/tasks/assigned');
+        const data = await response.json();
+        this.taskAssignments = data;
+      } catch (error) {
+        console.error('Error fetching task assignments:', error);
+      }
+    },
+    redirectToTaskDetails(taskAssignmentId) {
+      this.$router.push({ name: 'TaskDetails', params: { id: taskAssignmentId } });
+    }
   }
 };
 </script>
@@ -67,5 +79,10 @@ h2 {
 }
 #assigned_tasks td:nth-child(1) {
   font-weight: bold;
+}
+/* Add hover effect to indicate that rows are clickable */
+#assigned_tasks tbody tr:hover {
+  cursor: pointer;
+  background-color: #f5f5f5;
 }
 </style>

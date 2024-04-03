@@ -60,8 +60,8 @@ export default {
         task_description: '',
         task_date_created: '',
         task_due_date: '',
-        task_estimated_time_to_finish: '',
-        task_points: '',
+        task_estimated_time_to_finish: null,
+        task_points: null,
         intern_id: '',
         task_status: 'Not Started',
         date_started: '',
@@ -71,27 +71,30 @@ export default {
   },
   methods: {
     async submitTask() {
-      try {
-        console.log('Form data:', JSON.stringify(this.taskData));
+  try {
+    console.log('Form data:', JSON.stringify(this.taskData));
 
-        const response = await fetch('http://127.0.0.1:8000/task/add/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(this.taskData),
-        });
+    // Split the input string by comma and convert each ID into a number
+    this.taskData.intern_id = parseInt(this.taskData.intern_id);
 
-        if (!response.ok) {
-          throw new Error('Failed to submit task');
-        }
+    const response = await fetch('http://127.0.0.1:8000/task/add/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.taskData),
+    });
 
-        console.log('Task submitted successfully');
-        this.resetForm();
-      } catch (error) {
-        console.error('Error submitting task:', error);
-      }
-    },
+    if (!response.ok) {
+      throw new Error('Failed to submit task');
+    }
+
+    console.log('Task submitted successfully');
+    this.resetForm();
+  } catch (error) {
+    console.error('Error submitting task:', error);
+  }
+},
     resetForm() {
       this.taskData = {
         taskName: '',
@@ -99,7 +102,11 @@ export default {
         dateCreated: '',
         taskDue: '',
         estimatedTime: null,
-        taskPoints: null
+        taskPoints: null,
+        intern_id: '',
+        task_status: 'Not Started',
+        date_started: '',
+        file_submission: ''
       };
     }
   }

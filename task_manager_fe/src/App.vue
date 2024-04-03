@@ -28,6 +28,9 @@ import DepartmentTasks from './components/DepartmentTasks.vue';
 import GenerateReport from './pages/GenerateReport.vue';
 import ConcernForm from './forms/ConcernForm.vue';
 import InternForm from './forms/InternForm.vue';
+import TaskForm from './forms/TaskForm.vue';
+import AllConcerns from './pages/AllConcerns.vue';
+import AssignedTasks from './components/AssignedTasks.vue';
 
 export default {
   name: 'App',
@@ -40,11 +43,14 @@ export default {
     DepartmentTasks,
     GenerateReport,
     ConcernForm,
-    InternForm
+    InternForm,
+    TaskForm,
+    AllConcerns,
+    AssignedTasks
   },
   data() {
     return {
-      currentComponent: 'MyProfile'
+      currentComponent: 'AssignedTasks'
     }
   },
   methods: {

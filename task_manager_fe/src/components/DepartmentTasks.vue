@@ -89,33 +89,17 @@
 
 <script>
 export default {
-  title: 'All Tasks',
   name: 'DepartmentTasks',
   data() {
     return {
-      tasks: [
-      {
-          task_id: 1,
-          task_name: 'Task 1',
-          task_description: 'Description for Task 1',
-          task_date_created: '2024-04-02',
-          task_due_date: '2024-04-10',
-          task_estimated_time_to_finish: '5 hours',
-          task_points: 10
-        },
-        {
-          task_id: 2,
-          task_name: 'Task 2',
-          task_description: 'Description for Task 2',
-          task_date_created: '2024-04-03',
-          task_due_date: '2024-04-15',
-          task_estimated_time_to_finish: '8 hours',
-          task_points: 15
-        },
-        // Add tasks here if needed
-      ],
+      tasks: []
     };
   },
+  async created() {
+    const response = await fetch('http://127.0.0.1:8000/tasks/');
+    const data = await response.json();
+    this.tasks = data;
+  }
 };
 </script>
 

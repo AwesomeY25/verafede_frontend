@@ -40,6 +40,16 @@
             </a>
           </li>
           <li class="sidebar-item">
+            <a href="#" @click.prevent="selectComponent('all-concerns')">
+              All Concerns
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" @click.prevent="selectComponent('task-form')">
+              Create Task
+            </a>
+          </li>
+          <li class="sidebar-item">
             <a href="#" @click.prevent="selectComponent('intern-form')">
               Log Out
             </a>
