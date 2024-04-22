@@ -1,6 +1,7 @@
 <template>
+  <!-- intern info -->
   <div class="container-fluid">
-    <div class="card px-4 py-4" id="intern_info">
+    <div class="card px-4 py-4 mb-4" id="intern_info">
       <!-- header and edit button -->
       <div class="d-flex align-items-start">
         <h2>{{ internInfo.last_name }}, {{ internInfo.first_name }} {{ internInfo.mid_initial }}</h2>
@@ -68,6 +69,47 @@
           <div class="d-flex align-items-start">
             <p>End Date:</p>
             <p class="fw-bold ms-2">{{ formatDate(internInfo.end_date) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <!-- weekly workload dashboard -->
+    <div class="col-5">
+      <div class="card" id="weekly_workload">
+        <h5>Weekly Workload Dashboard</h5>
+        <div class="container mb-2">
+          <p>Week 7</p>
+          <div class="progress" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="120">
+            <div class="progress-bar" style="width: 83.33%">100%</div>
+          </div>
+          <p><span class="d-flex justify-content-end" style="color: #AB662E; margin-top: 2px;">Maximum Capacity</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- this week's tasks -->
+    <div class="col-7">
+      <div class="container-fluid" id="weekly_tasks">
+        <h5>This Week's Tasks</h5>
+        <!-- 1 card = 1 task -->
+        <div class="card mb-2" id="task_instance">
+          <div class="d-flex">
+            <div class="p-2">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="task_checkbox">
+              </div>
+            </div>
+            <div class="p-2">
+              <div class="d-flex align-items-start">
+                <h6 id="task_title">Task Title 1</h6>
+                <p class="ms-2" id="progress_badge"><span class="badge rounded-pill bg-danger">Not Started</span></p>
+              </div>
+              <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -147,5 +189,72 @@ created() {
 #intern_info > div > div > div {
   line-height: 0.6;
   margin-left: 17px;
+}
+#weekly_workload {
+  border-color: #EA580C;
+  border-width: 2px;
+  padding: 30px 30px 30px 30px;
+}
+#weekly_workload > h5 {
+  color: #EA580C;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 25px;
+}
+#weekly_workload > div > p {
+  color: #0A0A0A;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+.progress {
+  border-radius: 3px !important;
+  height: 25px !important;
+}
+.progress > .progress-bar {
+  background-color: #FB923C;
+  color: #0A0A0A;
+}
+#weekly_tasks > h5 {
+  color: #EA580C;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+#task_instance {
+  padding-right: 10px;
+  padding-bottom: 2px;
+  border-color: #0A0A0A;
+}
+.form-check {
+  margin-left: 10px;
+  margin-top: 2px;
+}
+#task_checkbox {
+  height: 25px;
+  width: 25px;
+  background-color: #D9D9D9;
+}
+#task_checkbox:checked {
+  background-color: #484848;
+  border-color: #484848;
+}
+#task_checkbox:focus {
+  border-color: #484848;
+  box-shadow: 0 0 0px;
+}
+#task_title {
+  color: #0A0A0A;
+  font-weight: bold;
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+#progress_badge {
+  font-size: 12px;
+  margin-bottom: 0px;
+  margin-top: 4px;
+}
+#task_instance > div > div > p {
+  color: #484848;
+  font-size: 12px;
 }
 </style>

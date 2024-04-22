@@ -5,6 +5,7 @@
         <!-- upcoming tasks -->
         <div class="container-fluid" id="upcoming_tasks">
             <h5>Upcoming Tasks</h5>
+            <!-- 1 card = 1 task -->
             <div class="card mb-2" id="task_instance1"> 
                 <div class="d-flex">
                     <div class="p-2">
@@ -46,6 +47,7 @@
         <!-- my tasks -->
         <div class="container-fluid" id="my_tasks">
             <h5>My Tasks</h5>
+            <!-- 1 card = 1 task -->
             <div class="card mb-2" id="task_instance2">
                 <div class="d-flex">
                     <div class="p-2">
