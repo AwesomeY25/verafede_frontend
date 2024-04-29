@@ -16,7 +16,7 @@
       <!-- elements under header -->
       <div class="d-flex align-items-start" id="under_header">
         <p>{{ internInfo.account_type }} | {{ internInfo.username }}</p>
-        <p class="ms-2"><span class="badge rounded-pill text-bg-success">{{ internInfo.intern_status }}</span></p>
+        <p class="ms-2"><span class="badge rounded-pill" id="intern_badge">{{ internBadgeColor(internInfo.intern_status) }}</span></p>
       </div>
       <div class="row mt-2">
         <!-- personal information -->
@@ -142,6 +142,21 @@ methods: {
   formatDate(date) {
     if (!date) return ''; // Handle empty date
     return new Date(date).toLocaleDateString();
+  },
+  internBadgeColor(status) {
+    if (!status) return ''; // Handle empty status
+    const internBadge = document.getElementById("intern_badge");
+    let color;
+    if (status === "Active") {
+      color = "#2B8C2F";
+    } else if (status === "Inactive") {
+      color = "#EAB308";
+    } else if (status === "Onboarded") {
+      color = "#F27036";
+    } else if (status === "Offboarded") {
+      color = "#EF4444";
+    }
+    internBadge.style.backgroundColor = color;
   }
 },
 created() {

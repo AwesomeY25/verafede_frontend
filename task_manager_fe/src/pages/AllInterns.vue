@@ -54,7 +54,7 @@
         <tr v-for="intern in interns" :key="intern.intern_id">
           <td>{{ intern.username }}</td>
           <td>{{ intern.first_name }} {{ intern.mid_initial }} {{ intern.last_name }}</td>
-          <td>{{ intern.intern_status }}</td>
+          <td><span class="badge rounded-pill" id="intern_badge">{{ internBadgeColor(internInfo.intern_status) }}</span></td>
           <td>{{ formatDate(intern.start_date) }}</td>
           <td>{{ formatDate(intern.end_date) }}</td>
           <td>{{ intern.min_workload_threshold }}</td>
@@ -89,7 +89,22 @@ export default {
     formatDate(date) {
       if (!date) return ''; // Handle empty date
       return new Date(date).toLocaleDateString();
+    },
+    internBadgeColor(status) {
+    if (!status) return ''; // Handle empty status
+    const internBadge = document.getElementById("intern_badge");
+    let color;
+    if (status === "Active") {
+      color = "#2B8C2F";
+    } else if (status === "Inactive") {
+      color = "#EAB308";
+    } else if (status === "Onboarded") {
+      color = "#F27036";
+    } else if (status === "Offboarded") {
+      color = "#EF4444";
     }
+    internBadge.style.backgroundColor = color;
+  }
   },
   created() {
     this.fetchInterns();
