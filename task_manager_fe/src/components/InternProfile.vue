@@ -16,7 +16,7 @@
       <!-- elements under header -->
       <div class="d-flex align-items-start" id="under_header">
         <p>{{ internInfo.account_type }} | {{ internInfo.username }}</p>
-        <p class="ms-2"><span class="badge rounded-pill" id="intern_badge">{{ internBadgeColor(internInfo.intern_status) }}</span></p>
+        <p class="ms-2"><span class="badge rounded-pill" id="intern_badge_color">{{ internBadgeColor(internInfo.intern_status) }}</span></p>
       </div>
       <div class="row mt-2">
         <!-- personal information -->
@@ -84,7 +84,7 @@
         <div class="container mb-2">
           <p>Week 7</p>
           <div class="progress" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="120">
-            <div class="progress-bar" style="width: 83.33%">100%</div>
+            <div class="progress-bar" id="progress_bar" style="width: 83.33%">100%</div>
           </div>
           <p><span class="d-flex justify-content-end" style="color: #AB662E; margin-top: 2px;">Maximum Capacity</span></p>
         </div>
@@ -106,7 +106,7 @@
             <div class="p-2">
               <div class="d-flex align-items-start">
                 <h6 id="task_title">Task Title 1</h6>
-                <p class="ms-2" id="progress_badge"><span class="badge rounded-pill bg-danger">Not Started</span></p>
+                <p class="ms-2" id="progress_badge"><span class="badge rounded-pill" id="task_badge_color">Not Started</span></p> 
               </div>
               <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad.</p>
             </div>
@@ -145,7 +145,7 @@ methods: {
   },
   internBadgeColor(status) {
     if (!status) return ''; // Handle empty status
-    const internBadge = document.getElementById("intern_badge");
+    const internBadge = document.getElementById("intern_badge_color");
     let color;
     if (status === "Active") {
       color = "#2B8C2F";
@@ -157,6 +157,38 @@ methods: {
       color = "#EF4444";
     }
     internBadge.style.backgroundColor = color;
+  },
+  taskBadgeColor(status) {
+    if (!status) return ''; // Handle empty status
+    const taskBadge = document.getElementById("task_badge_color");
+    let color;
+    if (status === "Not Started") {
+      color = "#EE514F";
+    } else if (status === "In Progress") {
+      color = "#EAB308";
+    } else if (status === "Done") {
+      color = "#22C55E";
+    }
+    taskBadge.style.backgroundColor = color;
+  },
+  formatProgressBar(workloadPercentage) {
+    if(!workloadPercentage) return ''; // Handle empty workload percentage
+    const progressBar = document.getElementById("progress_bar");
+    const widthValue = (workloadPercentage / 120) * 100
+    let color;
+    if (workloadPercentage < 20) {
+      color = "#10A2DD";
+    } else if (workloadPercentage == 20) {
+      color = "#5ABB6A";
+    } else if (workloadPercentage >= 20 && workloadPercentage <= 100) {
+      color = "#FED233";
+    } else if (workloadPercentage == 100) {
+      color = "#F99C35";
+    } else if (workloadPercentage > 100) {
+      color = "#F14738";
+    }
+    progressBar.style.width = widthValue;
+    progressBar.style.backgroundColor = color;
   }
 },
 created() {
@@ -227,7 +259,6 @@ created() {
   height: 25px !important;
 }
 .progress > .progress-bar {
-  background-color: #FB923C;
   color: #0A0A0A;
 }
 #weekly_tasks > h5 {
