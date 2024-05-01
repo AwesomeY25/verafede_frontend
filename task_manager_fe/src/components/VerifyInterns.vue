@@ -134,6 +134,7 @@
       return {
         unverifiedInterns: [],
         selectedInterns: {},
+        modalContent: '',
       };
     },
     mounted() {
@@ -250,6 +251,13 @@
             console.error('Error declining intern:', error);
           });
       },
+        openModal(ndaFileContent) {
+          this.modalContent = ndaFileContent;
+          // Open the modal using Bootstrap
+          const modal = new bootstrap.Modal(document.getElementById('ndaModal'));
+          modal.show();
+    },
+        
     },
   };
   </script>
