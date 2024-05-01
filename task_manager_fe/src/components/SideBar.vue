@@ -1,10 +1,9 @@
 <template>
   <div class="sidebar navbar" :class="{'sidebar-hidden': !isSidebarActive}">
     <div class="sidebar-header">
-      <p class="text-center">{Add Logo Here}</p>
+      <img class="img" src="../../src/assets/sidebar_logo.png">
     </div>
     <div>
-      <p class="text-center">Finance Department</p>
     </div>
     <div class="sidebar-content">
       <div class="sidebar-body">
@@ -127,6 +126,10 @@ ul {
 .sidebar-body {
   flex: 1;
   overflow-y: auto;
+}
+
+.img{
+  width: 95%;
 }
 
 .sidebar-footer {

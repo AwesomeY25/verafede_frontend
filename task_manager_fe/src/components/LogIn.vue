@@ -26,7 +26,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/login', {
+        const response = await fetch('http://127.0.0.1:8000/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -47,8 +47,6 @@ export default {
         localStorage.setItem('token', token);
         // Emit login success event to parent component (sidebar)
         this.$emit('login-success');
-        // Redirect to intern information page
-        this.$router.push('/intern-info');
       } catch (error) {
         console.error('Error logging in:', error.message);
         // Handle login error
