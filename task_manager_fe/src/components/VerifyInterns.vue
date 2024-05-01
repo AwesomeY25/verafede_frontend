@@ -1,5 +1,6 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import bootstrap from 'bootstrap';
 
 <template>
     <div class="container py-3">
