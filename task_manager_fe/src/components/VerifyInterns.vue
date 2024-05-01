@@ -1,7 +1,3 @@
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import bootstrap from 'bootstrap';
-
 <template>
     <div class="container py-3">
       <!-- for elements above table -->
@@ -110,26 +106,6 @@ import bootstrap from 'bootstrap';
       </div>
     </div>
 
-    <!-- Modal -->
-    <template>
-      <div class="modal" tabindex="-1" role="dialog" id="ndaModal">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">NDA File Content</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <pre>{{ modalContent }}</pre>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-  </template>
   
   <script>
   export default {
@@ -138,6 +114,7 @@ import bootstrap from 'bootstrap';
       return {
         unverifiedInterns: [],
         selectedInterns: {},
+        isModalOpen: false,
         modalContent: '',
       };
     },
@@ -255,13 +232,14 @@ import bootstrap from 'bootstrap';
             console.error('Error declining intern:', error);
           });
       },
-        openModal(ndaFileContent) {
-          this.modalContent = ndaFileContent;
-          // Open the modal using Bootstrap
-          const modal = new bootstrap.Modal(document.getElementById('ndaModal'));
-          modal.show();
+    
+    openModal(ndaFileContent) {
+      this.modalContent = ndaFileContent;
+      this.isModalOpen = true;
     },
-        
+    closeModal() {
+      this.isModalOpen = false;
+    },        
     },
   };
   </script>
