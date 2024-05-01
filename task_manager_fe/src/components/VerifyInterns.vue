@@ -65,9 +65,8 @@
               {{ formatDate(intern.created_at) }}
             </td>
             <td>
-              <a href="#" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover">
-                {{ intern.nda_file }}
-              </a>
+                <a href="#" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover" @click="openModal(intern.nda_file)"> {{ intern.nda_file }}
+                </a>
             </td>
             <td>
               <div class="row">
