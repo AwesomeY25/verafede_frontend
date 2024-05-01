@@ -1,3 +1,6 @@
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 <template>
     <div class="container py-3">
       <!-- for elements above table -->
