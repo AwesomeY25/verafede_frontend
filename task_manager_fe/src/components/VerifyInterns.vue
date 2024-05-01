@@ -37,6 +37,7 @@
           </div>
         </div>
       </div>
+    </template>
   
       <!-- new interns table -->
       <table class="table" id="new_interns">
@@ -232,16 +233,15 @@
             console.error('Error declining intern:', error);
           });
       },
-    
-    openModal(ndaFileContent) {
-      this.modalContent = ndaFileContent;
-      this.isModalOpen = true;
-    },
-    closeModal() {
-      this.isModalOpen = false;
+        openModal(ndaFileContent) {
+          this.modalContent = ndaFileContent;
+          this.isModalOpen = true;
+        },
+        closeModal() {
+          this.isModalOpen = false;
     },        
-    },
-  };
+  },
+};
   </script>
   
 <style>
