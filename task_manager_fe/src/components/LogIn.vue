@@ -11,6 +11,8 @@
         <input type="password" id="password" v-model="password" required>
       </div>
       <button type="submit">Login</button>
+      <!-- Display error message if present -->
+      <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
     </form>
   </div>
 </template>
@@ -20,13 +22,14 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      errorMessage: ''
     };
   },
   methods: {
     async login() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/', {
+        const response = await fetch('http://127.0.0.1:8000/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -36,10 +39,14 @@ export default {
             password: this.password
           })
         });
-        if (!response.ok) {
-          throw new Error('Login failed');
-        }
         const data = await response.json();
+        if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error('Invalid username or password');
+          } else {
+            throw new Error('Login failed');
+          }
+        }
         // Assuming the server responds with a token upon successful login
         const token = data.token;
         // You can store the token in local storage or Vuex for authentication
@@ -49,7 +56,7 @@ export default {
         this.$emit('login-success');
       } catch (error) {
         console.error('Error logging in:', error.message);
-        // Handle login error
+        this.errorMessage = error.message;
       }
     }
   }
