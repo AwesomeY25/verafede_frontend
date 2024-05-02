@@ -24,12 +24,12 @@ import SideBar from './components/SideBar.vue'
 import InternProfile from './components/InternProfile.vue';
 import VerifyInterns from './components/VerifyInterns.vue';
 import AllInterns from './pages/AllInterns.vue';
-import DepartmentTasks from './components/DepartmentTasks.vue';
 import GenerateReport from './pages/GenerateReport.vue';
 import ConcernForm from './forms/ConcernForm.vue';
 import InternForm from './forms/InternForm.vue';
 import TaskForm from './forms/TaskForm.vue';
 import AllConcerns from './pages/AllConcerns.vue';
+import AllTasks from './components/AllTasks.vue';
 import AssignedTasks from './components/AssignedTasks.vue';
 
 export default {
@@ -40,7 +40,7 @@ export default {
     InternProfile,
     VerifyInterns,
     AllInterns,
-    DepartmentTasks,
+    AllTasks,
     GenerateReport,
     ConcernForm,
     InternForm,

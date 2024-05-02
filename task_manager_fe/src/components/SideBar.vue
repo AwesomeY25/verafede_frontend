@@ -2,6 +2,7 @@
   <div class="sidebar navbar" :class="{'sidebar-hidden': !isSidebarActive}">
     <div class="sidebar-header">
       <img class="img" src="../../src/assets/sidebar_logo.png">
+      <a href="#" @click.prevent="selectComponent('assigned-tasks')"></a>
     </div>
     <div>
     </div>
@@ -24,8 +25,13 @@
             </a>
           </li>
           <li class="sidebar-item">
-            <a href="#" @click.prevent="selectComponent('department-tasks')">
+            <a href="#" @click.prevent="selectComponent('all-tasks')">
               All Tasks
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" @click.prevent="selectComponent('all-assigned-tasks')">
+              All Assigned Tasks
             </a>
           </li>
           <li class="sidebar-item">

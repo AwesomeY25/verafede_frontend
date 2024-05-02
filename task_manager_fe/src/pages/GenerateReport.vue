@@ -1,100 +1,108 @@
 <template>
-    <div class="container">
-        <!-- for elements above graph -->
-        <div class="d-flex">
-            <div class="p-2" id="header">
-                <h2>
-                    Weekly Workload Report
-                </h2>
-            </div>
-            <!-- search bar -->
-            <div class="p-2 ms-auto">
-                <button type="button" class="btn btn-primary" id="generate_btn">Generate Report PDF</button>
-            </div>
-        </div>
+  <div class="container">
+      <!-- for elements above graph -->
+      <div class="d-flex">
+          <div class="p-2" id="header">
+              <h2>
+                  Weekly Workload Report
+              </h2>
+          </div>
+          <!-- search bar -->
+          <div class="p-2 ms-auto">
+            <button type="button" class="btn btn-primary" id="generate_btn" @click="generatePdf">Generate Report PDF</button>
+          </div>
+      </div>
 
-        <!-- insert code for graph here -->
+      <!-- insert code for graph here -->
 
-    </div>
+  </div>
 
-    <div class="container">
-        <h2 id="interns_h2">
-            Department Interns
-        </h2>
-        <!-- search filter -->
-        <form>
-            <div class="d-flex flex-row" id="filters">
-                <div class="p-2">
-                    <label for="workload_filter" class="form-label">Workload</label>
-                    <select class="form-select" id="workload_filter" name="workload_filter">
-                        <option selected>All</option>
-                        <option>Underload</option>
-                        <option>Min Capacity</option>
-                        <option>In Capacity</option>
-                        <option>Max Capacity</option>
-                        <option>Overload</option>
-                    </select>
-                </div>
-                <div class="p-2">
-                    <label for="start_date_filter" class="form-label">Start Date</label>
-                    <input type="date" class="form-control" id="start_date_filter" name="start_date_filter">
-                </div>
-                <div class="p-2">
-                    <label for="end_date_filter" class="form-label">End Date</label>
-                    <input type="date" class="form-control" id="end_date_filter" name="end_date_filter">
-                </div>
-            </div>
-        </form>
+  <div class="container" id="report-container">
+      <h2 id="interns_h2">
+          Department Interns
+      </h2>
+      <!-- search filter -->
+      <form>
+          <div class="d-flex flex-row" id="filters">
+              <div class="p-2">
+                  <label for="workload_filter" class="form-label">Workload</label>
+                  <select class="form-select" id="workload_filter" name="workload_filter">
+                      <option selected>All</option>
+                      <option>Underload</option>
+                      <option>Min Capacity</option>
+                      <option>In Capacity</option>
+                      <option>Max Capacity</option>
+                      <option>Overload</option>
+                  </select>
+              </div>
+              <div class="p-2">
+                  <label for="start_date_filter" class="form-label">Start Date</label>
+                  <input type="date" class="form-control" id="start_date_filter" name="start_date_filter">
+              </div>
+              <div class="p-2">
+                  <label for="end_date_filter" class="form-label">End Date</label>
+                  <input type="date" class="form-control" id="end_date_filter" name="end_date_filter">
+              </div>
+          </div>
+      </form>
 
-        <!-- department interns table -->
-        <table class="table" id="dept_interns">
-            <thead>
-                <th scope="col">
-                    Intern Name 
-                    <button type="button" class="btn btn-light" id="sort_btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up" viewBox="0 0 16 16">
-                            <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.5.5 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5M7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
-                        </svg>
-                        <i class="bi bi-sort-up"></i>
-                    </button>
-                </th>
-                <th scope="col">Start Date</th>
-                <th scope="col">End Date</th>
-                <th scope="col">Week Capacity</th>
-            </thead>
-            <tbody>
-              <tr v-for="workload in workloads" :key="workload.week_date">
-                    <td>{{ workload.intern_name }}</td>
-                    <td>{{ workload.start_date }}</td>
-                    <td>{{ workload.end_date }}</td>
-                    <td>{{ workload.week_capacity }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+      <!-- department interns table -->
+      <table class="table" id="dept_interns">
+          <thead>
+              <th scope="col">
+                  Intern Name 
+                  <button type="button" class="btn btn-light" id="sort_btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up" viewBox="0 0 16 16">
+                          <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.5.5 0 0 1.7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707zM3.5 9a.5.5 0 0 1.5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5M7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
+                      </svg>
+                      <i class="bi bi-sort-up"></i>
+                  </button>
+              </th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+              <th scope="col">Week Capacity</th>
+          </thead>
+          <tbody>
+            <tr v-for="workload in workloads" :key="workload.week_date">
+                  <td>{{ workload.intern_name }}</td>
+                  <td>{{ workload.start_date }}</td>
+                  <td>{{ workload.end_date }}</td>
+                  <td>{{ workload.workload_tag }}</td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
 </template>
 
 <script>
+import jsPDF from 'jspdf';
+
 export default {
-    data() {
-        return {
-            workloads: []
-        };
-    },
-    async created() {
-        await this.fetchWorkloads();
-    },
-    methods: {
-        async fetchWorkloads() {
-            try {
-                const response = await fetch('http://127.0.0.1:8000/workloads/');
-                const data = await response.json();
-                this.workloads = data;
-            } catch (error) {
-                console.error('Error fetching workloads:', error);
-            }
-        }
-    }
+  data() {
+      return {
+          workloads: []
+      };
+  },
+  async created() {
+      await this.fetchWorkloads();
+  },
+  methods: {
+      generatePdf() {
+        const doc = new jsPDF();
+        const html = document.getElementById('report-container').innerHTML;
+        doc.fromHTML(html, 15, 15);
+       doc.save('weekly-workload-report.pdf');
+      },
+      async fetchWorkloads() {
+          try {
+              const response = await fetch('http://127.0.0.1:8000/workloads/');
+              const data = await response.json();
+              this.workloads = data;
+          } catch (error) {
+              console.error('Error fetching workloads:', error);
+          }
+      }
+  }
 };
 </script>
 

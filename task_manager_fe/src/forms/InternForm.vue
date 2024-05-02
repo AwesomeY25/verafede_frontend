@@ -184,6 +184,7 @@
                   <div class="col">
                     <h2>Internship Information</h2>
                     <p>Internship Type: {{ formData.internship_type }}</p>
+                    <p>Required Hours: {{ formData.required_hours }}</p>
                     <p>Start Date: {{ formData.start_date }}</p>
                     <p>End Date: {{ formData.end_date }}</p>
                     <p>School Coordinator: {{ formData.school_coordinator }}</p>
@@ -208,8 +209,9 @@
         formData: {
           first_name: '',
           last_name: '',
-          mid_initial: 'C',
+          mid_initial: ' ',
           birthday: '',
+          required_hours: '',
           gender: 'Prefer Not To Say',
           mobile_number: '',
           email: '',

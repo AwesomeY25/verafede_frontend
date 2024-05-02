@@ -3,13 +3,28 @@
     <h2>Task Details</h2>
     <div v-if="loading">Loading...</div>
     <div v-else>
-      <p><strong>Task ID:</strong> {{ task.task_id }}</p>
-      <p><strong>Task Name:</strong> {{ task.task_name }}</p>
-      <p><strong>Description:</strong> {{ task.task_description }}</p>
-      <p><strong>Date Created:</strong> {{ task.task_date_created }}</p>
-      <p><strong>Due Date:</strong> {{ task.task_due_date }}</p>
-      <p><strong>Estimated Time to Finish:</strong> {{ task.task_estimated_time_to_finish }}</p>
-      <p><strong>Points:</strong> {{ task.task_points }}</p>
+      <form>
+        <label for="task_id">Task ID:</label>
+        <input type="text" id="task_id" v-model="task.task_id" disabled>
+
+        <label for="task_name">Task Name:</label>
+        <input type="text" id="task_name" v-model="task.task_name">
+
+        <label for="task_description">Description:</label>
+        <textarea id="task_description" v-model="task.task_description"></textarea>
+
+        <label for="task_date_created">Date Created:</label>
+        <input type="date" id="task_date_created" v-model="task.task_date_created" disabled>
+
+        <label for="task_due_date">Due Date:</label>
+        <input type="date" id="task_due_date" v-model="task.task_due_date">
+
+        <label for="task_estimated_time_to_finish">Estimated Time to Finish:</label>
+        <input type="number" id="task_estimated_time_to_finish" v-model="task.task_estimated_time_to_finish">
+
+        <label for="task_points">Points:</label>
+        <input type="number" id="task_points" v-model="task.task_points">
+      </form>
     </div>
   </div>
 </template>
@@ -43,4 +58,4 @@ export default {
 
 <style>
 /* Add your styles here */
-</style>  
+</style>

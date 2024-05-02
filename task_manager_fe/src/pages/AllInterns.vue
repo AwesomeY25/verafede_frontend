@@ -2,41 +2,42 @@
   <div>
     <h2 id="h2">{{ title }}</h2>
 
-
     <form>
-        <div class="d-flex flex-row" id="filters">
-            <div class="p-2">
-                <label for="workload_filter" class="form-label">Intern Status</label>
-                <select class="form-select" id="workload_filter" name="workload_filter">
-                    <option selected>All</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
-                    <option>Onboarded</option>
-                    <option>Offboarded</option>
-                </select>
-            </div>
-            <div class="p-2">
-                <label for="start_date_filter" class="form-label">Start Date</label>
-                <input type="date" class="form-control" id="start_date_filter" name="start_date_filter">
-            </div>
-            <div class="p-2">
-                <label for="end_date_filter" class="form-label">End Date</label>
-                <input type="date" class="form-control" id="end_date_filter" name="end_date_filter">
-            </div>
-            <div class="p-2">
-                <label for="workload_filter" class="form-label">Department</label>
-                <select class="form-select" id="workload_filter" name="workload_filter">
-                    <option selected>All</option>
-                    <option>Operations</option>
-                    <option>Human Resources</option>
-                    <option>Information Technology</option>
-                    <option>Finance</option>
-                </select>
-            </div>
+      <div class="d-flex flex-row" id="filters">
+        <div class="p-2">
+          <label for="intern_status" class="form-label">Intern Status</label>
+          <select class="form-select" id="intern_status" name="intern_status" v-model="internStatus">
+            <option selected>All</option>
+            <option>Active</option>
+            <option>Inactive</option>
+            <option>Onboarded</option>
+            <option>Offboarded</option>
+          </select>
         </div>
+        <div class="p-2">
+          <label for="start_date_filter" class="form-label">Start Date</label>
+          <input type="date" class="form-control" id="start_date_filter" name="start_date_filter" v-model="startDate">
+        </div>
+        <div class="p-2">
+          <label for="end_date_filter" class="form-label">End Date</label>
+          <input type="date" class="form-control" id="end_date_filter" name="end_date_filter" v-model="endDate">
+        </div>
+        <div class="p-2">
+          <label for="department_filter" class="form-label">Department</label>
+          <select class="form-select" id="department_filter" name="department_filter" v-model="department">
+            <option selected>All</option>
+            <option>Operations</option>
+            <option>Human Resources</option>
+            <option>Information Technology</option>
+            <option>Finance</option>
+          </select>
+        </div>
+        <div class="p-2">
+          <label for="search_query" class="form-label">Search</label>
+          <input type="text" class="form-control" id="search_query" name="search_query" v-model="searchQuery">
+        </div>
+      </div>
     </form>
-
-
 
     <table class="table">
       <thead>
@@ -46,6 +47,7 @@
           <th scope="col">Intern Status</th>
           <th scope="col">Start Date</th>
           <th scope="col">End Date</th>
+          <th scope="col">Required Hours</th>
           <th scope="col">Min Workload Threshold</th>
           <th scope="col">Max Workload Threshold</th>
         </tr>
@@ -54,9 +56,10 @@
         <tr v-for="intern in interns" :key="intern.intern_id">
           <td>{{ intern.username }}</td>
           <td>{{ intern.first_name }} {{ intern.mid_initial }} {{ intern.last_name }}</td>
-          <td><span class="badge rounded-pill" id="intern_badge_color">{{ internBadgeColor(internInfo.intern_status) }}</span></td>
+          <td><span class="badge rounded-pill" id="intern_badge_color">{{ internBadgeColor(intern.intern_status) }}</span></td>
           <td>{{ formatDate(intern.start_date) }}</td>
           <td>{{ formatDate(intern.end_date) }}</td>
+          <td>{{ intern.required_hours }}</td>
           <td>{{ intern.min_workload_threshold }}</td>
           <td>{{ intern.max_workload_threshold }}</td>
         </tr>
@@ -69,14 +72,21 @@
 export default {
   data() {
     return {
-      title: 'All Interns',
-      interns: []
-    };
-  },
+    title: 'All Interns',
+    interns: [],
+    internStatus: '', // or ''
+    startDate: '', // or ''
+    endDate: '', // or ''
+    department: '', // or ''
+    searchQuery: '',
+    sortBy: '',
+    sortOrder: ''
+  };
+},
   methods: {
     async fetchInterns() {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/interns/`);
+        const response = await fetch(`http://127.0.0.1:8000/interns/?intern_status=${this.internStatus}&start_date=${this.startDate}&end_date=${this.endDate}&department=${this.department}&search_query=${this.searchQuery}&sort_by=${this.sortBy}&sort_order=${this.sortOrder}`);
         if (!response.ok) {
           throw new Error('Failed to fetch interns information');
         }
@@ -91,20 +101,20 @@ export default {
       return new Date(date).toLocaleDateString();
     },
     internBadgeColor(status) {
-    if (!status) return ''; // Handle empty status
-    const internBadge = document.getElementById("intern_badge_color");
-    let color;
-    if (status === "Active") {
-      color = "#2B8C2F";
-    } else if (status === "Inactive") {
-      color = "#EAB308";
-    } else if (status === "Onboarded") {
-      color = "#F27036";
-    } else if (status === "Offboarded") {
-      color = "#EF4444";
+      if (!status) return ''; // Handle empty status
+      const internBadge = document.getElementById("intern_badge_color");
+      let color;
+      if (status === "Active") {
+        color = "#2B8C2F";
+      } else if (status === "Inactive") {
+        color = "#EAB308";
+      } else if (status === "Onboarded") {
+        color = "#F27036";
+      } else if (status === "Offboarded") {
+        color = "#EF4444";
+      }
+      internBadge.style.backgroundColor = color;
     }
-    internBadge.style.backgroundColor = color;
-  }
   },
   created() {
     this.fetchInterns();

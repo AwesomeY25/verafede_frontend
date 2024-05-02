@@ -6,7 +6,6 @@
     <table class="table" id="all_concerns">
       <thead>
         <tr>
-          <th scope="col">ID</th>
           <th scope="col">Description</th>
           <th scope="col">Academic Workload</th>
           <th scope="col">Other Commitments</th>
@@ -15,7 +14,6 @@
       </thead>
       <tbody>
         <tr v-for="concern in concerns" :key="concern.concern_id">
-          <td>{{ concern.concern_id }}</td>
           <td>{{ concern.concern_description }}</td>
           <td>{{ concern.academic_workload }}</td>
           <td>{{ concern.other_commitments }}</td>
