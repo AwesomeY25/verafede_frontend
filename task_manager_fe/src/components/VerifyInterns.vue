@@ -103,6 +103,19 @@
       </nav>
     </div>
   </div>
+
+  <!-- Modal -->
+<div class="modal" :class="{ 'is-active': isModalOpen }">
+  <div class="modal-background" @click="closeModal"></div>
+  <div class="modal-content">
+    <div class="box" style="background-color: #ffffff;">
+      <!-- Modal content -->
+      {{ modalContent }}
+    </div>
+  </div>
+  <button class="modal-close is-large" @click="closeModal"></button>
+</div>
+
 </template>
 
 <script>
