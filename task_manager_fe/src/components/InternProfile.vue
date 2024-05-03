@@ -2,17 +2,132 @@
   <!-- intern info -->
   <div class="container-fluid">
     <div class="card px-4 py-4 mb-4" id="intern_info">
-      <!-- header and edit button -->
+      <!-- header -->
       <div class="d-flex align-items-start">
         <h2>{{ internInfo.last_name }}, {{ internInfo.first_name }} {{ internInfo.mid_initial }}</h2>
-        <button type="button" class="btn btn-light" id="edit_btn">
+        <!-- edit profile button -->
+        <button type="button" class="btn btn-light" id="edit_btn" data-bs-toggle="modal" data-bs-target="#edit_profile_modal">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
           </svg>
           <i class="bi bi-pencil-square"></i>
         </button>
+
+        <!-- edit profile modal -->
+        <div class="modal-container">
+          <div class="modal fade" id="edit_profile_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <h1 class="modal-title text-center mb-4">Edit Intern Profile</h1>
+                  <form class="form">
+                    <h5 id="modal_body_header">Personal Information</h5>
+                    <div class="row mb-2">
+                      <div class="form-group col row">
+                        <label for="first_name" class="col-sm-5 col-form-label">First Name:</label>
+                        <div class="col-sm-7"><input class="form-control" type="text" id="first_name" name="first_name" :value="internInfo.first_name" readonly></div>
+                      </div>
+                      <div class="form-group col row">
+                        <label for="mid_initial" class="col-sm-6 col-form-label">Middle Initial:</label>
+                        <div class="col-sm-6"><input class="form-control" type="text" id="mid_initial" name="mid_initial" :value="internInfo.mid_initial" readonly></div>
+                      </div>
+                      <div class="form-group col row">
+                        <label for="last_name" class="col-sm-5 col-form-label">Last Name:</label>
+                        <div class="col-sm-7"><input class="form-control" type="text" id="last_name" name="last_name" :value="internInfo.last_name" readonly></div>
+                      </div>
+                    </div>
+                    <div class="row mb-2">
+                      <div class="form-group col row">
+                        <label for="gender" class="col-sm-3 col-form-label">Gender:</label>
+                        <div class="col-sm-9">
+                          <select v-model="updateProfileData.gender" class="form-select" id="gender" name="gender" aria-label="Default select example">
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Other">Other</option>
+                            <option value="Prefer Not To Say">Prefer Not To Say</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group col row">
+                        <label for="birthday" class="col-sm-3 col-form-label">Birthday:</label>
+                        <div class="col-sm-9"><input v-model="updateProfileData.birthday" type="date" class="form-control" id="birthday" name="birthday"></div>
+                      </div>
+                    </div>
+                    <div class="row mb-2">
+                      <div class="form-group col row">
+                        <label for="mobile_number" class="col-sm-5 col-form-label">Mobile Number:</label>
+                        <div class="col-sm-7"><input v-model="updateProfileData.mobile_number" class="form-control" type="text" id="mobile_number" name="mobile_number"></div>
+                      </div>
+                      <div class="form-group col row">
+                        <label for="email" class="col-sm-4 col-form-label">Email Address:</label>
+                        <div class="col-sm-8"><input v-model="updateProfileData.email" type="email" class="form-control" id="email" name="email"></div>
+                      </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                      <label for="school" class="col-sm-3 col-form-label">School/University:</label>
+                      <div class="col-sm-9"><input v-model="updateProfileData.school" type="text" class="form-control" id="school" name="school"></div>
+                    </div>
+                    <div class="row mb-4">
+                      <div class="form-group col row">
+                        <label for="degree" class="col-sm-5 col-form-label">Degree Program:</label>
+                        <div class="col-sm-7"><input v-model="updateProfileData.degree" class="form-control" type="text" id="degree" name="degree"></div>
+                      </div>
+                      <div class="form-group col row">
+                        <label for="year_level" class="col-sm-4 col-form-label">Year Level:</label>
+                        <div class="col-sm-8">
+                          <select v-model="updateProfileData.year_level" id="year_level" name="year_level" class="form-select" aria-label="Select Year Level">
+                            <option value="1">First Year</option>
+                            <option value="2">Second Year</option>
+                            <option value="3">Third Year</option>
+                            <option value="4">Fourth Year</option>
+                            <option value="5">Fifth Year</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <h5 id="modal_body_header">Internship Information</h5>
+                    <div class="form-group row mb-2">
+                      <label for="internship_type" class="col-sm-3 col-form-label">Type of Internship:</label>
+                      <div class="col-sm-9">
+                        <select v-model="updateProfileData.internship_type" id="internship_type" name="internship_type" class="form-select" aria-label="Select Internship Type">
+                            <option value="Required">Required Internship</option>
+                            <option value="Voluntary">Voluntary Internship</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row mb-2">
+                      <div class="form-group col row">
+                        <label for="start_date" class="col-sm-4 col-form-label">Start Date:</label>
+                        <div class="col-sm-8"><input v-model="updateProfileData.start_date" type="date" class="form-control" id="start_date" name="start_date"></div>
+                      </div>
+                      <div class="form-group col row">
+                        <label for="end_date" class="col-sm-3 col-form-label">End Date:</label>
+                        <div class="col-sm-9"><input v-model="updateProfileData.end_date" type="date" class="form-control" id="end_date" name="end_date"></div>
+                      </div>
+                    </div>
+                    <div class="form-group row mb-5">
+                      <label for="school_coordinator" class="col-sm-3 col-form-label">School Coordinator:</label>
+                      <div class="col-sm-9"><input v-model="updateProfileData.school_coordinator" class="form-control" type="text" id="school_coordinator" name="school_coordinator"></div>
+                    </div>
+                    <div class="col mt-5 px-2" id="buttons">
+                      <div class="row d-inline-flex align-self-end m-2">
+                        <div class="col mx-auto" id="cancel_btn">
+                          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                        <div class="col mx-auto" id="submit_btn">
+                          <button type="button" class="btn btn-primary" @click="updateProfile(id)">Save Changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
       <!-- elements under header -->
       <div class="d-flex align-items-start" id="under_header">
         <p>{{ internInfo.account_type }} | {{ internInfo.username }}</p>
@@ -118,12 +233,26 @@
 </template>
   
 <script>
+import { Modal } from 'bootstrap';
   export default {
     data() {
       return {
         title: 'Intern Information',
         internInfo: {},
-        currentUser: {id: 1}
+        currentUser: {id: 1},
+        updateProfileData: {
+          birthday: '',
+          gender: '',
+          mobile_number: '',
+          email: '',
+          school: '',
+          degree: '',
+          year_level: '',
+          internship_type: '',
+          start_date: '',
+          end_date: '',
+          school_coordinator: ''
+        }
       };
     },
 methods: {
@@ -137,6 +266,44 @@ methods: {
       this.internInfo = data;
     } catch (error) {
       console.error('Error fetching intern information:', error.message);
+    }
+  },
+  async updateProfile(id) {
+    const modal = new Modal(document.getElementById('edit_profile_modal'));
+    modal.hide(); 
+
+    const updatedProfileData = {
+      gender: this.updateProfileData.gender,
+      birthday: this.updateProfileData.birthday,
+      mobile_number: this.updateProfileData.mobile_number,
+      email: this.updateProfileData.email,
+      school: this.updateProfileData.school,
+      degree: this.updateProfileData.degree,
+      year_level: this.updateProfileData.year_level,
+      internship_type: this.updateProfileData.internship_type,
+      start_date: this.updateProfileData.start_date,
+      end_date: this.updateProfileData.end_date,
+      school_coordinator: this.updateProfileData.school_coordinator,
+    };
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/intern/${id}/`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedProfileData)
+      });
+
+      if (response.ok) {
+        // Profile updated successfully
+        const profileResponse = await fetch(`http://127.0.0.1:8000/intern/${id}/`);
+        const newInternData = await profileResponse.json();
+        this.internInfo = newInternData;
+      } else {
+        // Error handling
+        console.error('Failed to update profile');
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
   },
   formatDate(date) {
@@ -236,6 +403,18 @@ created() {
 #intern_info > div > div > div {
   line-height: 0.6;
   margin-left: 17px;
+}
+.modal-container {
+  display: flex;
+  justify-content: center;
+}
+.modal-title {
+  font-weight: bold;
+  font-size: 28px;
+}
+#modal_body_header {
+  font-weight: bold;
+  color: #F27036;
 }
 #weekly_workload {
   border-color: #EA580C;
