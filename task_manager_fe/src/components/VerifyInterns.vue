@@ -15,10 +15,10 @@
             <i class="bi bi-three-dots-vertical"></i>
           </button>
           <ul class="dropdown-menu" aria-labelledby="kebab_menu">
-            <li><a class="dropdown-item" href="#" @click="selectAll">Select All</a></li>
-            <li><a class="dropdown-item" href="#" @click="deselectAll">Deselect All</a></li>
-            <li><a class="dropdown-item" href="#" @click="verifySelected">Verify Selected</a></li>
-            <li><a class="dropdown-item" href="#" @click="declineSelected">Decline Selected</a></li>
+            <li><a class="dropdown-item" href="#" @click.prevent="selectAll">Select All</a></li>
+            <li><a class="dropdown-item" href="#" @click.prevent="deselectAll">Deselect All</a></li>
+            <li><a class="dropdown-item" href="#" @click.prevent="verifySelected">Verify Selected</a></li>
+            <li><a class="dropdown-item" href="#" @click.prevent="declineSelected">Decline Selected</a></li>
           </ul>
         </div>
       </div>

@@ -1,126 +1,130 @@
 <template>
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="personal-info-tab" data-bs-toggle="tab" data-bs-target="#personal-info" type="button" role="tab" aria-controls="personal-info" aria-selected="true">Personal Information</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="internship-info-tab" data-bs-toggle="tab" data-bs-target="#internship-info" type="button" role="tab" aria-controls="internship-info" aria-selected="false">Internship Information</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="review-response-tab" data-bs-toggle="tab" data-bs-target="#review-response" type="button" role="tab" aria-controls="review-response" aria-selected="false">Review Response</button>
-            </li>
-          </ul>
-          <div class="tab-content" id="myTabContent">
-            <!-- Part One -->
-            <div class="tab-pane fade show active" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Personal Information</h5>
-                  <form @submit.prevent="submitForm">
-                    <div class="col px-2">
-                      <div class="row align-items-start m-2">
-                        <div class="col">
-                          <label for="first_name" class="form-label mb-1 align-self-start">First Name:</label>
-                          <input v-model="formData.first_name" class="form-control" type="text" id="first_name" name="first_name">
-                        </div>
-                        <div class="col">
-                          <label for="last_name" class="form-label mb-1 label-align-start">Last Name:</label>
-                          <input v-model="formData.last_name" class="form-control" type="text" id="last_name" name="last_name">
-                        </div>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="personal-info-tab" data-bs-toggle="tab" data-bs-target="#personal-info" type="button" role="tab" aria-controls="personal-info" aria-selected="true">Personal Information</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="internship-info-tab" data-bs-toggle="tab" data-bs-target="#internship-info" type="button" role="tab" aria-controls="internship-info" aria-selected="false">Internship Information</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="review-response-tab" data-bs-toggle="tab" data-bs-target="#review-response" type="button" role="tab" aria-controls="review-response" aria-selected="false">Review Response</button>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <!-- Part One -->
+          <div class="tab-pane fade show active" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Personal Information</h5>
+                <form @submit.prevent="submitForm">
+                  <div class="col px-2">
+                    <div class="row align-items-start m-2">
+                      <div class="col">
+                        <label for="first_name" class="form-label mb-1 align-self-start">First Name:</label>
+                        <input v-model="formData.first_name" class="form-control" type="text" id="first_name" name="first_name">
+                      </div>
+                      <div class="col">
+                        <label for="last_name" class="form-label mb-1 label-align-start">Last Name:</label>
+                        <input v-model="formData.last_name" class="form-control" type="text" id="last_name" name="last_name">
                       </div>
                     </div>
-                    <div class="col px-2">
-                      <div class="row m-2">
-                        <div class="col">
-                          <label for="birthday" class="form-label mb-1 align-self-start">Birthday:</label>
-                          <input v-model="formData.birthday" type="date" id="birthday" name="birthday">
-                        </div>
-                        <div class="col">
-                          <label for="gender" class="form-label mb-1 align-self-start">Gender:</label>
-                          <select v-model="formData.gender" id="gender" name="gender" class="form-select" aria-label="Default select example">
-                            <option value="Female">Female</option>
-                            <option value="Male">Male</option>
-                            <option value="Other">Other</option>
-                            <option selected value="Prefer Not To Say">Prefer Not To Say</option>
-                          </select>
-                        </div>
+                  </div>
+                  <div class="col px-2">
+                    <div class="row m-2">
+                      <div class="col">
+                        <label for="birthday" class="form-label mb-1 align-self-start">Birthday:</label>
+                        <input v-model="formData.birthday" type="date" id="birthday" name="birthday">
+                      </div>
+                      <div class="col">
+                        <label for="gender" class="form-label mb-1 align-self-start">Gender:</label>
+                        <select v-model="formData.gender" id="gender" name="gender" class="form-select" aria-label="Default select example">
+                          <option value="Female">Female</option>
+                          <option value="Male">Male</option>
+                          <option value="Other">Other</option>
+                          <option selected value="Prefer Not To Say">Prefer Not To Say</option>
+                        </select>
                       </div>
                     </div>
-                    <div class="col px-2">
-                      <div class="row m-2">
-                        <div class="col">
-                          <label for="mobile_number" class="form-label mb-1 align-self-start">Mobile Number:</label>
-                          <input v-model="formData.mobile_number" type="text" class="form-control" id="mobile_number" placeholder="09123456789">
-                        </div>
-                        <div class="col">
-                          <label for="email" class="form-label mb-1">Email Address:</label>
-                          <input v-model="formData.email" type="email" class="form-control" id="email" placeholder="name@example.com">
-                        </div>
+                  </div>
+                  <div class="col px-2">
+                    <div class="row m-2">
+                      <div class="col">
+                        <label for="mobile_number" class="form-label mb-1 align-self-start">Mobile Number:</label>
+                        <input v-model="formData.mobile_number" type="text" class="form-control" id="mobile_number" placeholder="09123456789">
+                      </div>
+                      <div class="col">
+                        <label for="email" class="form-label mb-1">Email Address:</label>
+                        <input v-model="formData.email" type="email" class="form-control" id="email" placeholder="name@example.com">
                       </div>
                     </div>
-                    <div class="col px-2">
-                      <div class="row m-2">
-                        <div class="col">
-                          <label for="school" class="form-label mb-1 align-self-start">School/University:</label>
-                          <input v-model="formData.school" type="text" class="form-control" id="school" placeholder="Ateneo de Manila University">
-                        </div>
+                  </div>
+                  <div class="col px-2">
+                    <div class="row m-2">
+                      <div class="col">
+                        <label for="school" class="form-label mb-1 align-self-start">School/University:</label>
+                        <input v-model="formData.school" type="text" class="form-control" id="school" placeholder="Ateneo de Manila University">
                       </div>
                     </div>
-                    <div class="col px-2">
-                      <div class="row m-2">
-                        <div class="col">
-                          <label for="degree" class="form-label mb-1 align-self-start">Degree Program:</label>
-                          <input v-model="formData.degree" type="text" class="form-control" id="degree" placeholder="BS Business Administration">
-                        </div>
-                        <div class="col">
-                          <label for="year_level" class="form-label mb-1 align-self-start">Year Level:</label>
-                          <select v-model="formData.year_level" id="year_level" name="year_level" class="form-select" aria-label="Select Year Level">
-                            <option value="1">First Year</option>
-                            <option value="2">Second Year</option>
-                            <option value="3">Third Year</option>
-                            <option value="4">Fourth Year</option>
-                            <option value="5">Fifth Year</option>
-                          </select>
-                        </div>
+                  </div>
+                  <div class="col px-2">
+                    <div class="row m-2">
+                      <div class="col">
+                        <label for="degree" class="form-label mb-1 align-self-start">Degree Program:</label>
+                        <input v-model="formData.degree" type="text" class="form-control" id="degree" placeholder="BS Business Administration">
+                      </div>
+                      <div class="col">
+                        <label for="year_level" class="form-label mb-1 align-self-start">Year Level:</label>
+                        <select v-model="formData.year_level" id="year_level" name="year_level" class="form-select" aria-label="Select Year Level">
+                          <option value="1">First Year</option>
+                          <option value="2">Second Year</option>
+                          <option value="3">Third Year</option>
+                          <option value="4">Fourth Year</option>
+                          <option value="5">Fifth Year</option>
+                        </select>
                       </div>
                     </div>
-                  </form>
-                </div>
+                  </div>
+                  <div class="row d-inline-flex align-self-end m-2">
+                    <button class="btn btn-secondary" @click="prevTab">Previous</button>
+                    <button class="btn btn-secondary" @click="nextTab">Next</button>
+                  </div>
+                </form>
               </div>
             </div>
-            <!-- Part Two -->
-            <div class="tab-pane fade" id="internship-info" role="tabpanel" aria-labelledby="internship-info-tab">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Internship Information</h5>
-                  <form @submit.prevent="submitForm">
-                    <div class="col px-2">
-                      <div class="row m-2">
-                        <div class="col">
-                          <label for="internship_type" class="form-label mb-1 align-self-start">Internship Type:</label>
-                          <select v-model="formData.internship_type" id="internship_type" name="internship_type" class="form-select" aria-label="Select Internship Type">
-                            <option value="Required">Required Internship</option>
-                            <option value="Voluntary">Voluntary Internship</option>
-                          </select>
-                        </div>
+          </div>
+          <!-- Part Two -->
+          <div class="tab-pane fade" id="internship-info" role="tabpanel" aria-labelledby="internship-info-tab">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Internship Information</h5>
+                <form @submit.prevent="submitForm">
+                  <div class="col px-2">
+                    <div class="row m-2">
+                      <div class="col">
+                        <label for="internship_type" class="form-label mb-1 align-self-start">Internship Type:</label>
+                        <select v-model="formData.internship_type" id="internship_type" name="internship_type" class="form-select" aria-label="Select Internship Type">
+                          <option value="Required">Required Internship</option>
+                          <option value="Voluntary">Voluntary Internship</option>
+                        </select>
                       </div>
                     </div>
-                    <div class="col px-2">
-                      <div class="row m-2">
-                        <div class="col">
-                          <label for="start_date">Start Date:</label><br>
-                          <input v-model="formData.start_date" type="date" id="start_date" name="start_date">
-                        </div>
-                        <div class="col">
-                          <label for="end_date">End Date:</label><br>
-                          <input v-model="formData.end_date" type="date" id="end_date" name="end_date">
-                        </div>
+                  </div>
+                  <div class="col px-2">
+                    <div class="row m-2">
+                      <div class="col">
+                        <label for="start_date">Start Date:</label><br>
+                        <input v-model="formData.start_date" type="date" id="start_date" name="start_date">
+                      </div>
+                      <div class="col">
+                        <label for="end_date">End Date:</label><br>
+                        <input v-model="formData.end_date" type="date" id="end_date" name="end_date">
                       </div>
                     </div>
-                    <div class="col px-2">
+                  </div>
+                  <div class="col px-2">
                     <div class="row m-2">
                       <div class="col">
                         <label for="school_coordinator" class="form-label mb-1 align-self-start">School Coordinator (Optional):</label>
@@ -149,15 +153,9 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col px-2">
-                    <div class="row d-inline-flex align-self-end m-2">
-                      <div class="col mx-auto">
-                        <button class="btn btn-outline-primary mb-3">Cancel</button>
-                      </div>
-                      <div class="col mx-auto">
-                        <button type="submit" class="btn btn-primary mb-3">Submit</button>
-                      </div>
-                    </div>
+                  <div class="row d-inline-flex align-self-end m-2">
+                    <button class="btn btn-secondary" @click="prevTab">Previous</button>
+                    <button class="btn btn-secondary" @click="nextTab">Next</button>
                   </div>
                 </form>
               </div>
@@ -190,6 +188,10 @@
                     <p>School Coordinator: {{ formData.school_coordinator }}</p>
                     <p>Assigned Department: {{ formData.department_id }}</p>
                     <p>Signed NDA File Link Submission: {{ formData.nda_file }}</p>
+                  </div>
+                  <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-secondary" @click="prevTab">Previous</button>
+                    <button class="btn btn-primary ms-2" @click="submitForm">Submit</button>
                   </div>
                 </div>
               </div>
@@ -228,6 +230,32 @@
       };
     },
     methods: {
+      prevTab() {
+      const tabs = document.querySelectorAll('.nav-link');
+      const currentTab = document.querySelector(`#${this.activeTab}`);
+      const prevTab = currentTab.previousElementSibling;
+
+      if (prevTab) {
+        tabs.forEach((tab) => {
+          tab.classList.remove('active');
+        });
+        prevTab.classList.add('active');
+        this.activeTab = prevTab.id;
+      }
+    },
+    nextTab() {
+      const tabs = document.querySelectorAll('.nav-link');
+      const currentTab = document.querySelector(`#${this.activeTab}`);
+      const nextTab = currentTab.nextElementSibling;
+
+      if (nextTab) {
+        tabs.forEach((tab) => {
+          tab.classList.remove('active');
+        });
+        nextTab.classList.add('active');
+        this.activeTab = nextTab.id;
+      }
+    },
       async submitForm() {
         try {
           // Print the JSON file in the console log before submitting

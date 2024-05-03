@@ -30,11 +30,6 @@
             </a>
           </li>
           <li class="sidebar-item">
-            <a href="#" @click.prevent="selectComponent('all-assigned-tasks')">
-              All Assigned Tasks
-            </a>
-          </li>
-          <li class="sidebar-item">
             <a href="#" @click.prevent="selectComponent('generate-report')">
               Workload Overview
             </a>

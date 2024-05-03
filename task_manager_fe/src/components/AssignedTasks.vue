@@ -38,12 +38,9 @@
 </template>
 
 <script>
-import TaskDetails from './TaskDetails.vue';
-
 export default {
   name: 'AssignedTasks',
   components: {
-    TaskDetails
   },
   data() {
     return {

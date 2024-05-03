@@ -21,6 +21,9 @@
       <h2 id="interns_h2">
           Department Interns
       </h2>
+      <div class="p-2 ms-auto">
+        <button type="button" class="btn btn-primary" id="generate_btn" @click="create_workload">Report Workload</button>
+      </div>
       <!-- search filter -->
       <form>
           <div class="d-flex flex-row" id="filters">
@@ -75,23 +78,71 @@
 </template>
 
 <script>
-import jsPDF from 'jspdf';
+import { jsPDF } from "jspdf";
 
 export default {
   data() {
       return {
-          workloads: []
+          workloads: [],
+          interns: [],
+          monday: null
       };
   },
   async created() {
+      const today = new Date();
+      const day = today.getDay();
+      const diff = today.getDate() - day + (day === 0 ? -6 : 1);
+      this.monday = new Date(today.setDate(diff));
+
+      await this.fetchInterns();
+      await this.generateWorkload();
       await this.fetchWorkloads();
   },
   methods: {
-      generatePdf() {
-        const doc = new jsPDF();
-        const html = document.getElementById('report-container').innerHTML;
-        doc.fromHTML(html, 15, 15);
-       doc.save('weekly-workload-report.pdf');
+      async fetchInterns() {
+          try {
+              // Replace <department_id> with the actual ID of the department
+              const response = await fetch(`http://127.0.0.1:8000/interns/`);
+              const data = await response.json();
+              this.interns = data;
+          } catch (error) {
+              console.error('Error fetching interns:', error);
+          }
+      },
+      async generateWorkload() {
+          const internIds = this.interns.map((intern) => intern.id);
+          for (const internId of internIds) {
+              // Calculate the workload for the intern for the current week
+              const week_date = this.monday.toISOString().split('T')[0];
+              await this.create_workload(internId, week_date);
+          }
+      },
+      async create_workload(intern_id, week_date) {
+        try {
+          const response = await fetch(`http://127.0.0.1:8000/workloads/new/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              intern_id,
+              week_date
+            })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            // Handle success response
+          } else {
+            const errorData = await response.json();
+            console.error(errorData);
+            // Handle error response
+          }
+        } catch (error) {
+          console.error(error);
+          // Handle network error
+        }
       },
       async fetchWorkloads() {
           try {
@@ -101,6 +152,22 @@ export default {
           } catch (error) {
               console.error('Error fetching workloads:', error);
           }
+      },
+      generatePdf() {
+        const doc = new jsPDF();
+        const specialElementHandlers = {
+          '#editor': function () {
+            return true;
+          }
+        };
+
+        const pdfContent = document.getElementById('report-container').innerHTML;
+        doc.fromHTML(pdfContent, 15, 15, {
+          'width': 170,
+          'elementHandlers': specialElementHandlers
+        });
+
+        doc.save('weekly_workload_report.pdf');
       }
   }
 };

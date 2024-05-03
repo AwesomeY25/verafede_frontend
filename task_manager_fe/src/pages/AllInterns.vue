@@ -42,26 +42,20 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Username</th>
           <th scope="col">Intern Name</th>
-          <th scope="col">Intern Status</th>
           <th scope="col">Start Date</th>
           <th scope="col">End Date</th>
-          <th scope="col">Required Hours</th>
-          <th scope="col">Min Workload Threshold</th>
-          <th scope="col">Max Workload Threshold</th>
+          <th scope="col">Department</th>
+          <th scope="col">Intern Status</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="intern in interns" :key="intern.intern_id">
-          <td>{{ intern.username }}</td>
           <td>{{ intern.first_name }} {{ intern.mid_initial }} {{ intern.last_name }}</td>
-          <td><span class="badge rounded-pill" id="intern_badge_color">{{ internBadgeColor(intern.intern_status) }}</span></td>
           <td>{{ formatDate(intern.start_date) }}</td>
           <td>{{ formatDate(intern.end_date) }}</td>
-          <td>{{ intern.required_hours }}</td>
-          <td>{{ intern.min_workload_threshold }}</td>
-          <td>{{ intern.max_workload_threshold }}</td>
+          <td>{{ intern.department }}</td>
+          <td>{{ intern.intern_status }}</td>
         </tr>
       </tbody>
     </table>
@@ -72,21 +66,41 @@
 export default {
   data() {
     return {
-    title: 'All Interns',
-    interns: [],
-    internStatus: '', // or ''
-    startDate: '', // or ''
-    endDate: '', // or ''
-    department: '', // or ''
-    searchQuery: '',
-    sortBy: '',
-    sortOrder: ''
-  };
-},
+      title: 'All Interns',
+      interns: [],
+      internStatus: '', // or ''
+      startDate: '', // or ''
+      endDate: '', // or ''
+      department: '', // or ''
+      searchQuery: '',
+      sortBy: 'intern_id',
+      sortOrder: 'desc'
+    };
+  },
   methods: {
     async fetchInterns() {
+      const queryParams = {};
+
+      if (this.internStatus) {
+        queryParams.intern_status = this.internStatus;
+      }
+      if (this.startDate) {
+        queryParams.start_date = this.startDate;
+      }
+      if (this.endDate) {
+        queryParams.end_date = this.endDate;
+      }
+      if (this.department) {
+        queryParams.department = this.department;
+      }
+      if (this.searchQuery) {
+        queryParams.search_query = this.searchQuery;
+      }
+      queryParams.sort_by = this.sortBy;
+      queryParams.sort_order = this.sortOrder;
+
       try {
-        const response = await fetch(`http://127.0.0.1:8000/interns/?intern_status=${this.internStatus}&start_date=${this.startDate}&end_date=${this.endDate}&department=${this.department}&search_query=${this.searchQuery}&sort_by=${this.sortBy}&sort_order=${this.sortOrder}`);
+        const response = await fetch(`http://127.0.0.1:8000/interns/?${Object.keys(queryParams).map(k => `${k}=${queryParams[k]}`).join('&')}`);
         if (!response.ok) {
           throw new Error('Failed to fetch interns information');
         }
@@ -113,8 +127,17 @@ export default {
       } else if (status === "Offboarded") {
         color = "#EF4444";
       }
-      internBadge.style.backgroundColor = color;
+      if (internBadge) {
+        internBadge.style.backgroundColor = color;
+      }
     }
+  },
+  watch: {
+    internStatus: 'fetchInterns',
+    startDate: 'fetchInterns',
+    endDate: 'fetchInterns',
+    department: 'fetchInterns',
+    searchQuery: 'fetchInterns'
   },
   created() {
     this.fetchInterns();

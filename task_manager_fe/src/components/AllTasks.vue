@@ -4,14 +4,13 @@
     <form>
       <div class="d-flex flex-row" id="filters">
         <div class="p-2">
-          <label for="workload_filter" class="form-label">Workload</label>
-          <select class="form-select" id="workload_filter" name="workload_filter">
+          <label for="task_status_filter" class="form-label">Task Status</label>
+          <select class="form-select" id="task_status_filter" name="task_status_filter">
             <option selected>All</option>
-            <option>Underload</option>
-            <option>Min Capacity</option>
-            <option>In Capacity</option>
-            <option>Max Capacity</option>
-            <option>Overload</option>
+            <option>Not Started</option>
+            <option>In Progress</option>
+            <option>Done</option>
+            <option>Cancelled</option>
           </select>
         </div>
         <div class="p-2">
@@ -139,14 +138,19 @@ export default {
         task_due_date: '',
         task_estimated_time_to_finish: '',
         task_points: ''
-      }
+      },
+      filterTaskStatus: 'All',
+      filterStartDate: '',
+      filterEndDate: '',
+      sortBy: 'task_name',
+      sortOrder: 'asc'
     };
   },
   methods: {
     fetchInterns() {
       fetch('http://127.0.0.1:8000/interns/')
-       .then((response) => response.json())
-       .then((data) => {
+        .then((response) => response.json())
+        .then((data) => {
           this.interns = data;
         });
     },
@@ -156,6 +160,24 @@ export default {
       this.selectedTask.task_assigned_to = task.task_assignments.first_name;
       const modal = new Modal(document.getElementById('task-modal'));
       modal.show();
+    },
+    async fetchTasks() {
+      const params = new URLSearchParams();
+      if (this.filterTaskStatus !== 'All') {
+        params.append('task_status', this.filterTaskStatus);
+      }
+      if (this.filterStartDate) {
+        params.append('start_date', this.filterStartDate);
+      }
+      if (this.filterEndDate) {
+        params.append('end_date', this.filterEndDate);
+      }
+      params.append('sort_by', this.sortBy);
+      params.append('sort_order', this.sortOrder);
+
+      const response = await fetch(`http://127.0.0.1:8000/tasks/?${params}`);
+      const data = await response.json();
+      this.tasks = data;
     },
     async deleteTask(taskId) {
       const modal = new Modal(document.getElementById('task-modal'));
