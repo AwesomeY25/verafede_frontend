@@ -116,7 +116,7 @@
                           <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
                         </div>
                         <div class="col mx-auto" id="submit_btn">
-                          <button type="button" class="btn btn-primary" @click="updateProfile(id)">Save Changes</button>
+                          <button type="button" class="btn btn-primary" @click="updateProfile(internInfo.intern_id)">Save Changes</button>
                         </div>
                       </div>
                     </div>
