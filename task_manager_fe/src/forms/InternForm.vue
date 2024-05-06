@@ -87,6 +87,16 @@
                       </div>
                     </div>
                   </div>
+                  <div class="col mt-5 px-2" id="buttons">
+                    <div class="row d-inline-flex align-self-end m-2">
+                      <div class="col mx-auto" id="cancel_btn">
+                        <button class="btn btn-outline-primary mb-3">Cancel</button>
+                      </div>
+                      <div class="col mx-auto" id="next_btn">
+                        <button class="btn btn-primary" @click="switchTab(1)">Next</button>
+                      </div>
+                    </div>
+                  </div>
                 </form>
               </div>
             </div>
@@ -151,11 +161,11 @@
                 </div>
                 <div class="col mt-5 px-2" id="buttons">
                   <div class="row d-inline-flex align-self-end m-2">
-                    <div class="col mx-auto" id="cancel_btn">
-                      <button class="btn btn-outline-primary mb-3">Cancel</button>
+                    <div class="col mx-auto" id="back_btn">
+                      <button class="btn btn-outline-primary mb-3" @click="switchTab(0)">Back</button>
                     </div>
-                    <div class="col mx-auto" id="submit_btn">
-                      <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="col mx-auto" id="next_btn">
+                      <button class="btn btn-primary" @click="switchTab(2)">Next</button>
                     </div>
                   </div>
                 </div>
@@ -168,30 +178,42 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Review Response</h5>
-              <div class="row">
-                <div class="col">
-                  <h2 class="response-title">Personal Information</h2>
-                  <p class="response-format">First Name: <span style="font-weight: bold;">{{ formData.first_name }}</span></p>
-                  <p class="response-format">Last Name: <span style="font-weight: bold;">{{ formData.last_name }}</span></p>
-                  <p class="response-format">Birthday: <span style="font-weight: bold;">{{ formData.birthday }}</span></p>
-                  <p class="response-format">Gender: <span style="font-weight: bold;">{{ formData.gender }}</span></p>
-                  <p class="response-format">Mobile Number: <span style="font-weight: bold;">{{ formData.mobile_number }}</span></p>
-                  <p class="response-format">Email Address: <span style="font-weight: bold;">{{ formData.email }}</span></p>
-                  <p class="response-format">School/University: <span style="font-weight: bold;">{{ formData.school }}</span></p>
-                  <p class="response-format">Degree Program: <span style="font-weight: bold;">{{ formData.degree }}</span></p>
-                  <p class="response-format">Year Level: <span style="font-weight: bold;">{{ formData.year_level }}</span></p>
+              <form @submit.prevent="submitForm">
+                <div class="row">
+                  <div class="col">
+                    <h2 class="response-title">Personal Information</h2>
+                    <p class="response-format">First Name: <span style="font-weight: bold;">{{ formData.first_name }}</span></p>
+                    <p class="response-format">Last Name: <span style="font-weight: bold;">{{ formData.last_name }}</span></p>
+                    <p class="response-format">Birthday: <span style="font-weight: bold;">{{ formData.birthday }}</span></p>
+                    <p class="response-format">Gender: <span style="font-weight: bold;">{{ formData.gender }}</span></p>
+                    <p class="response-format">Mobile Number: <span style="font-weight: bold;">{{ formData.mobile_number }}</span></p>
+                    <p class="response-format">Email Address: <span style="font-weight: bold;">{{ formData.email }}</span></p>
+                    <p class="response-format">School/University: <span style="font-weight: bold;">{{ formData.school }}</span></p>
+                    <p class="response-format">Degree Program: <span style="font-weight: bold;">{{ formData.degree }}</span></p>
+                    <p class="response-format">Year Level: <span style="font-weight: bold;">{{ formData.year_level }}</span></p>
+                  </div>
+                  <div class="col">
+                    <h2 class="response-title">Internship Information</h2>
+                    <p class="response-format">Internship Type: <span style="font-weight: bold;">{{ formData.internship_type }}</span></p>
+                    <p class="response-format">Required Hours: <span style="font-weight: bold;">{{ formData.required_hours }}</span></p>
+                    <p class="response-format">Start Date: <span style="font-weight: bold;">{{ formData.start_date }}</span></p>
+                    <p class="response-format">End Date: <span style="font-weight: bold;">{{ formData.end_date }}</span></p>
+                    <p class="response-format">School Coordinator: <span style="font-weight: bold;">{{ formData.school_coordinator }}</span></p>
+                    <p class="response-format">Assigned Department: <span style="font-weight: bold;">{{ formData.department_id }}</span></p>
+                    <p class="response-format">Signed NDA File Link Submission: <span style="font-weight: bold;">{{ formData.nda_file }}</span></p>
+                  </div>
                 </div>
-                <div class="col">
-                  <h2 class="response-title">Internship Information</h2>
-                  <p class="response-format">Internship Type: <span style="font-weight: bold;">{{ formData.internship_type }}</span></p>
-                  <p class="response-format">Required Hours: <span style="font-weight: bold;">{{ formData.required_hours }}</span></p>
-                  <p class="response-format">Start Date: <span style="font-weight: bold;">{{ formData.start_date }}</span></p>
-                  <p class="response-format">End Date: <span style="font-weight: bold;">{{ formData.end_date }}</span></p>
-                  <p class="response-format">School Coordinator: <span style="font-weight: bold;">{{ formData.school_coordinator }}</span></p>
-                  <p class="response-format">Assigned Department: <span style="font-weight: bold;">{{ formData.department_id }}</span></p>
-                  <p class="response-format">Signed NDA File Link Submission: <span style="font-weight: bold;">{{ formData.nda_file }}</span></p>
+                <div class="col mt-5 px-2" id="buttons">
+                  <div class="row d-inline-flex align-self-end m-2">
+                    <div class="col mx-auto" id="back_btn">
+                      <button class="btn btn-outline-primary mb-3" @click="switchTab(1)">Back</button>
+                    </div>
+                    <div class="col mx-auto" id="submit_btn">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
@@ -252,6 +274,22 @@ export default {
       } catch (error) {
         console.error('Error submitting form:', error);
       }
+    },
+    switchTab(tabIndex) {
+      const tabContent = document.querySelector('.tab-content')
+      const tabs = tabContent.querySelectorAll('.tab-pane'); // Select all tab elements
+
+      // Check if tabIndex is within valid range
+      if (tabIndex < 0 || tabIndex >= tabs.length) {
+        console.error('Invalid tab index');
+        return;
+      }
+
+      // Hide all tabs
+      tabs.forEach(tab => tab.classList.remove('show', 'active'));
+
+      // Show the selected tab
+      tabs[tabIndex].classList.add('show', 'active');
     }
   }
 }
@@ -284,5 +322,37 @@ export default {
   color: #52525C;
   font-weight: bold;
   margin-bottom: 2px;
+}
+#back_btn > button {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: bold;
+  color: #52525C;
+  font-size: 14px;
+  border-color: #52525C;
+  width: 300px;
+  height: 38px;
+}
+#back_btn > button:hover {
+  background-color: #D1D9E0;
+  border-color: #52525C;
+  width: 300px;
+  height: 38px;
+}
+#next_btn > button {
+  font-weight: bold;
+  color: #F8FAFC;
+  font-size: 14px;
+  background-color: #EA580C;
+  border-color: #EA580C;
+  width: 300px;
+  height: 38px;
+}
+#next_btn > button:hover {
+  background-color: #d24f0a;
+  border-color: #d24f0a;
+  width: 300px;
+  height: 38px;
 }
 </style>  
