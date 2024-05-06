@@ -10,6 +10,7 @@
           <th scope="col">Academic Workload</th>
           <th scope="col">Other Commitments</th>
           <th scope="col">Date Filed</th>
+          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -18,6 +19,7 @@
           <td>{{ concern.academic_workload }}</td>
           <td>{{ concern.other_commitments }}</td>
           <td>{{ formatDate(concern.date_filed) }}</td>
+          <td><button type="button" class="btn btn-success mx-1" id="resolve_btn">Resolve</button></td>
         </tr>
       </tbody>
     </table>
@@ -61,10 +63,22 @@
   color: #F8FAFC;
 }
 #all_concerns td:nth-child(1) {
-  text-align: center;
+  text-align: left;
   font-weight: bold;
 }
-#all_concerns td:nth-child(5) {
+#all_concerns td {
   text-align: center;
+}
+#resolve_btn {
+  font-size: 14px;
+  width: 80px;
+  height: 30px;
+  margin: 0 auto;
+  padding: 0;
+  background-color: #22C55E;
+  border-color: #22C55E;
+}
+#resolve_btn:hover {
+  background-color: #28914f;
 }
 </style>
