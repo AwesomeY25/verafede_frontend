@@ -42,15 +42,15 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Intern Name</th>
-          <th scope="col">Start Date</th>
-          <th scope="col">End Date</th>
-          <th scope="col">Department</th>
-          <th scope="col">Intern Status</th>
+          <th scope="col" @click="sortInternsBy('first_name')">Intern Name</th>
+          <th scope="col" @click="sortInternsBy('start_date')">Start Date</th>
+          <th scope="col" @click="sortInternsBy('end_date')">End Date</th>
+          <th scope="col" @click="sortInternsBy('department')">Department</th>
+          <th scope="col" @click="sortInternsBy('intern_status')">Intern Status</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="intern in interns" :key="intern.intern_id">
+        <tr v-for="intern in sortedInterns" :key="intern.intern_id">
           <td>{{ intern.first_name }} {{ intern.mid_initial }} {{ intern.last_name }}</td>
           <td>{{ formatDate(intern.start_date) }}</td>
           <td>{{ formatDate(intern.end_date) }}</td>
@@ -74,11 +74,16 @@ export default {
       department: '', // or ''
       searchQuery: '',
       sortBy: 'intern_id',
-      sortOrder: 'desc'
+      sortOrder: 'desc',
     };
   },
   methods: {
-    async fetchInterns() {
+    sortInternsBy(key) {
+      this.sortBy = key;
+      this.sortOrder = this.sortOrder === 'desc'? 'asc' : 'desc';
+      this.fetchInterns(this.sortBy, this.sortOrder);
+    },
+    async fetchInterns(sortBy, sortOrder) {
       const queryParams = {};
 
       if (this.internStatus) {
@@ -96,12 +101,13 @@ export default {
       if (this.searchQuery) {
         queryParams.search_query = this.searchQuery;
       }
-      queryParams.sort_by = this.sortBy;
-      queryParams.sort_order = this.sortOrder;
+      queryParams.sort_by = sortBy;
+      queryParams.sort_order = sortOrder;
 
       try {
         const response = await fetch(`http://127.0.0.1:8000/interns/?${Object.keys(queryParams).map(k => `${k}=${queryParams[k]}`).join('&')}`);
         if (!response.ok) {
+          console.log(response);
           throw new Error('Failed to fetch interns information');
         }
         const data = await response.json();
@@ -109,7 +115,7 @@ export default {
       } catch (error) {
         console.error('Error fetching interns information:', error.message);
       }
-    },
+   },
     formatDate(date) {
       if (!date) return ''; // Handle empty date
       return new Date(date).toLocaleDateString();
@@ -132,15 +138,40 @@ export default {
       }
     }
   },
+  computed: {
+    sortedInterns() {
+      return this.interns.slice().sort((a, b) => {
+        if (this.sortBy === 'start_date' || this.sortBy === 'end_date') {
+          return this.sortOrder === 'desc'
+           ? new Date(b[this.sortBy]) - new Date(a[this.sortBy])
+            : new Date(a[this.sortBy]) - new Date(b[this.sortBy]);
+        } else {
+          return this.sortOrder === 'desc'
+           ? a[this.sortBy] < b[this.sortBy]? 1 : -1
+            : a[this.sortBy] > b[this.sortBy]? 1 : -1;
+        }
+      });
+    }
+  },
   watch: {
-    internStatus: 'fetchInterns',
-    startDate: 'fetchInterns',
-    endDate: 'fetchInterns',
-    department: 'fetchInterns',
-    searchQuery: 'fetchInterns'
+    internStatus: function() {
+      this.fetchInterns(this.sortBy, this.sortOrder);
+    },
+    startDate: function() {
+      this.fetchInterns(this.sortBy, this.sortOrder);
+    },
+    endDate: function() {
+      this.fetchInterns(this.sortBy, this.sortOrder);
+    },
+    department: function() {
+      this.fetchInterns(this.sortBy, this.sortOrder);
+    },
+    searchQuery: function() {
+      this.fetchInterns(this.sortBy, this.sortOrder);
+    }
   },
   created() {
-    this.fetchInterns();
+    this.fetchInterns(this.sortBy, this.sortOrder);
   }
 };
 </script>

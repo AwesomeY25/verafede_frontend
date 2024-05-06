@@ -1,20 +1,18 @@
-<!-- Edit based on the applicable data to fetch -->
-
 <template>
   <div>
     <h2 id="h2">All Concerns</h2>
     <table class="table" id="all_concerns">
       <thead>
         <tr>
-          <th scope="col">Description</th>
-          <th scope="col">Academic Workload</th>
-          <th scope="col">Other Commitments</th>
-          <th scope="col">Date Filed</th>
+          <th scope="col" @click="sortBy('concern_description')">Description</th>
+          <th scope="col" @click="sortBy('academic_workload')">Academic Workload</th>
+          <th scope="col" @click="sortBy('other_commitments')">Other Commitments</th>
+          <th scope="col" @click="sortBy('date_filed')">Date Filed</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="concern in concerns" :key="concern.concern_id">
+        <tr v-for="concern in sortedConcerns" :key="concern.concern_id">
           <td>{{ concern.concern_description }}</td>
           <td>{{ concern.academic_workload }}</td>
           <td>{{ concern.other_commitments }}</td>
@@ -25,26 +23,43 @@
     </table>
   </div>
 </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        title: 'AllConcerns',
-        concerns: [],
-      };
+
+<script>
+export default {
+  data() {
+    return {
+      title: 'AllConcerns',
+      concerns: [],
+      sortByKey: '',
+      sortOrder: 1,
+    };
+  },
+  methods: {
+    formatDate(date) {
+      return new Date(date).toLocaleDateString();
     },
-    methods: {
-      formatDate(date) {
-        return new Date(date).toLocaleDateString();
-      },
+    sortBy(key) {
+      this.sortByKey = key;
+      this.sortOrder = this.sortOrder === 1? -1 : 1;
     },
-    async created() {
-      const response = await fetch('http://127.0.0.1:8000/concerns/');
-      this.concerns = await response.json();
+  },
+  computed: {
+    sortedConcerns() {
+      return this.concerns.slice().sort((a, b) => {
+        if (this.sortByKey === 'date_filed') {
+          return this.sortOrder * (new Date(a[this.sortByKey]) - new Date(b[this.sortByKey]));
+        } else {
+          return this.sortOrder * (a[this.sortByKey] > b[this.sortByKey]? 1 : -1);
+        }
+      });
     },
-  };
-  </script>
+  },
+  async created() {
+    const response = await fetch('http://127.0.0.1:8000/concerns/');
+    this.concerns = await response.json();
+  },
+};
+</script>
 
 <style>
 #h2 {

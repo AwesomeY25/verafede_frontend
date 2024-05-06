@@ -5,7 +5,7 @@
       <div class="d-flex flex-row" id="filters">
         <div class="p-2">
           <label for="task_status_filter" class="form-label">Task Status</label>
-          <select class="form-select" id="task_status_filter" name="task_status_filter">
+          <select class="form-select" id="task_status_filter" name="task_status_filter" v-model="filterTaskStatus">
             <option selected>All</option>
             <option>Not Started</option>
             <option>In Progress</option>
@@ -15,11 +15,11 @@
         </div>
         <div class="p-2">
           <label for="start_date_filter" class="form-label">Start Date</label>
-          <input type="date" class="form-control" id="start_date_filter" name="start_date_filter">
+          <input type="date" class="form-control" id="start_date_filter" name="start_date_filter" v-model="filterStartDate">
         </div>
         <div class="p-2">
           <label for="end_date_filter" class="form-label">End Date</label>
-          <input type="date" class="form-control" id="end_date_filter" name="end_date_filter">
+          <input type="date" class="form-control" id="end_date_filter" name="end_date_filter" v-model="filterEndDate">
         </div>
       </div>
     </form>
@@ -27,16 +27,16 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Task Name</th>
-          <th scope="col">Task Status</th>
-          <th scope="col">Assigned To</th>
-          <th scope="col">Due Date</th>
-          <th scope="col">Est. Time To Finish</th>
-          <th scope="col">Task Points</th>
+          <th scope="col" @click="sortTaskBy('task_name')">Task Name</th>
+          <th scope="col" @click="sortTaskBy('task_status')">Task Status</th>
+          <th scope="col" @click="sortTaskBy('assigned_to')">Assigned To</th>
+          <th scope="col" @click="sortTaskBy('due_date')">Due Date</th>
+          <th scope="col" @click="sortTaskBy('estimated_time_to_finish')">Est. Time To Finish</th>
+          <th scope="col" @click="sortTaskBy('task_points')">Task Points</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="task in tasks" :key="task.task_id" @click="showModal(task)">
+        <tr v-for="task in sortedTasks" :key="task.task_id" @click="showModal(task)">
           <td>{{ task.task_name }}</td>
           <td>
             <span v-for="(assignment, index) in task.task_assignments" :key="index">
@@ -125,7 +125,8 @@ export default {
   name: 'AllTasks',
   data() {
     return {
-      interns: [],
+      sortBy: 'task_name',
+      sortOrder: 'asc',interns: [],
       tasks: [],
       taskProgressOptions: ['In Progress', 'Cancelled', 'Done', 'Not Started'],
       selectedTask: {
@@ -142,11 +143,14 @@ export default {
       filterTaskStatus: 'All',
       filterStartDate: '',
       filterEndDate: '',
-      sortBy: 'task_name',
-      sortOrder: 'asc'
     };
   },
   methods: {
+    sortTaskBy(key) {
+      this.sortBy = key;
+      this.sortOrder = this.sortOrder === 'desc'? 'asc' : 'desc';
+      this.fetchTasks();
+    },
     fetchInterns() {
       fetch('http://127.0.0.1:8000/interns/')
         .then((response) => response.json())
@@ -163,7 +167,7 @@ export default {
     },
     async fetchTasks() {
       const params = new URLSearchParams();
-      if (this.filterTaskStatus !== 'All') {
+      if (this.filterTaskStatus!== 'All') {
         params.append('task_status', this.filterTaskStatus);
       }
       if (this.filterStartDate) {
@@ -237,6 +241,25 @@ export default {
       } catch (error) {
         console.error('Error:', error);
       }
+    }
+  },
+  computed: {
+    sortedTasks() {
+      return this.tasks.slice().sort((a, b) => {
+        if (this.sortBy === 'due_date' || this.sortBy === 'estimated_time_to_finish') {
+          return this.sortOrder === 'desc'
+          ? new Date(b[this.sortBy]) - new Date(a[this.sortBy])
+            : new Date(a[this.sortBy]) - new Date(b[this.sortBy]);
+        } else if (this.sortBy === 'assigned_to') {
+          return this.sortOrder === 'desc'
+          ? a.task_assignments[0].last_name > b.task_assignments[0].last_name? 1 : -1
+            : a.task_assignments[0].last_name < b.task_assignments[0].last_name? 1 : -1;
+        } else {
+          return this.sortOrder === 'desc'
+          ? a[this.sortBy] < b[this.sortBy]? 1 : -1
+            : a[this.sortBy] > b[this.sortBy]? 1 : -1;
+        }
+      });
     }
   },
   async created() {
