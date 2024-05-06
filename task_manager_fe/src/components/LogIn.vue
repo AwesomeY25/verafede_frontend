@@ -11,19 +11,30 @@
         <input type="password" id="password" v-model="password" required>
       </div>
       <button type="submit">Login</button>
-      <!-- Display error message if present -->
-      <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
     </form>
+    <ModalComponent :modelValue="showErrorModal" @update:modelValue="showErrorModal = $event">
+      <template #header>Error</template>
+      <template #default>{{ errorMessage }}</template>
+      <template #footer>
+        <button @click="showErrorModal = false">OK</button>
+      </template>
+    </ModalComponent>
   </div>
 </template>
 
 <script>
+import ModalComponent from './ModalComponent.vue';
+
 export default {
+  components: {
+    ModalComponent,
+  },
   data() {
     return {
       username: '',
       password: '',
-      errorMessage: ''
+      errorMessage: '',
+      showErrorModal: false,
     };
   },
   methods: {
@@ -57,59 +68,9 @@ export default {
       } catch (error) {
         console.error('Error logging in:', error.message);
         this.errorMessage = error.message;
+        this.showErrorModal = true;
       }
     }
   }
 };
 </script>
-
-<style>
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-form {
-  width: 300px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px; /* Add border radius for rounded corners */
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-</style>

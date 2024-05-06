@@ -116,7 +116,7 @@
                           <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
                         </div>
                         <div class="col mx-auto" id="submit_btn">
-                          <button type="button" class="btn btn-primary" @click="updateProfile(internInfo.intern_id)">Save Changes</button>
+                          <button type="button" class="btn btn-primary" @click="updateProfile(id)">Save Changes</button>
                         </div>
                       </div>
                     </div>
@@ -197,12 +197,12 @@
       <div class="card" id="weekly_workload">
         <h5>Weekly Workload Dashboard</h5>
         <div class="container mb-2">
-          <p>Week 7</p>
-          <div class="progress" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="120">
-            <div class="progress-bar" id="progress_bar" style="width: 83.33%">100%</div>
-          </div>
-          <p><span class="d-flex justify-content-end" style="color: #AB662E; margin-top: 2px;">Maximum Capacity</span></p>
-        </div>
+              <p>Week 7</p>
+              <div class="progress" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="120">
+                <div class="progress-bar" id="progress_bar" :style="`width: ${percentage}%; background-color: ${getColor(percentage)}`">{{ percentage }}%</div>
+              </div>
+              <p><span class="d-flex justify-content-end" style="color: #AB662E; margin-top: 2px;">Maximum Capacity</span></p>
+            </div>
       </div>
     </div>
 
@@ -238,6 +238,7 @@ import { Modal } from 'bootstrap';
     data() {
       return {
         title: 'Intern Information',
+        percentage: 83.33,
         internInfo: {},
         currentUser: {id: 1},
         updateProfileData: {
@@ -256,6 +257,15 @@ import { Modal } from 'bootstrap';
       };
     },
 methods: {
+  getColor(percentage) {
+      if (percentage < 100) {
+        return 'green';
+      } else if (percentage > 80) {
+        return 'orange';
+      } else {
+        return 'red';
+      }
+    },
   async fetchInternInfo(id) {
     try {
       const response = await fetch(`http://127.0.0.1:8000/intern/${id}/`);

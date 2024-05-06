@@ -31,10 +31,13 @@ import TaskForm from './forms/TaskForm.vue';
 import AllConcerns from './pages/AllConcerns.vue';
 import AllTasks from './components/AllTasks.vue';
 import AssignedTasks from './components/AssignedTasks.vue';
+import ModalComponent from './components/ModalComponent.vue';
+
 
 export default {
   name: 'App',
   components: {
+    ModalComponent,
     NavBar,
     SideBar,
     InternProfile,
