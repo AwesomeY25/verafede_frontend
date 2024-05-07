@@ -205,7 +205,42 @@
             </div>
       </div>
     </div>
+      <!-- Modal component for confirmation -->
+    <div class="modal" id="confirm-modal" tabindex="-1" aria-labelledby="confirm-modal-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirm-modal-label">Confirm Submission</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click.prevent="closeModal('confirm-modal')"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to edit this intern profile?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click.prevent="closeModal('confirm-modal')">Cancel</button>
+            <button type="button" class="btn btn-primary" @click.prevent="submitForm">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Modal component for submission confirmation -->
+    <div class="modal" id="submission-modal" tabindex="-1" aria-labelledby="submission-modal-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="submission-modal-label">Submission Confirmation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click.prevent="clearForm"></button>
+          </div>
+          <div class="modal-body">
+            Your concern has been submitted successfully!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" @click.prevent="closeModal('submission-modal')">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- this week's tasks -->
     <div class="col-7">
       <div class="container-fluid" id="weekly_tasks">
@@ -240,23 +275,36 @@ import { Modal } from 'bootstrap';
         title: 'Intern Information',
         percentage: 83.33,
         internInfo: {},
+        id: 1,
         currentUser: {id: 1},
         updateProfileData: {
           birthday: '',
           gender: '',
           mobile_number: '',
-          email: '',
           school: '',
           degree: '',
           year_level: '',
           internship_type: '',
+          required_hours: '',
           start_date: '',
           end_date: '',
-          school_coordinator: ''
+          school_coordinator: '',
+          department_id: '',
         }
       };
     },
 methods: {
+  showModal() {
+      const modal = document.getElementById('confirm-modal');
+      modal.classList.add('show');
+      modal.style.display = 'block';
+    },
+  closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.remove('show');
+      modal.style.display = 'none';
+      this.clearForm();
+    },
   getColor(percentage) {
       if (percentage < 100) {
         return 'green';
@@ -278,44 +326,74 @@ methods: {
       console.error('Error fetching intern information:', error.message);
     }
   },
-  async updateProfile(id) {
-    const modal = new Modal(document.getElementById('edit_profile_modal'));
-    modal.hide(); 
-
-    const updatedProfileData = {
-      gender: this.updateProfileData.gender,
-      birthday: this.updateProfileData.birthday,
-      mobile_number: this.updateProfileData.mobile_number,
-      email: this.updateProfileData.email,
-      school: this.updateProfileData.school,
-      degree: this.updateProfileData.degree,
-      year_level: this.updateProfileData.year_level,
-      internship_type: this.updateProfileData.internship_type,
-      start_date: this.updateProfileData.start_date,
-      end_date: this.updateProfileData.end_date,
-      school_coordinator: this.updateProfileData.school_coordinator,
-    };
-
+  async fetchTask(id) {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/intern/${id}/`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedProfileData)
-      });
-
-      if (response.ok) {
-        // Profile updated successfully
-        const profileResponse = await fetch(`http://127.0.0.1:8000/intern/${id}/`);
-        const newInternData = await profileResponse.json();
-        this.internInfo = newInternData;
-      } else {
-        // Error handling
-        console.error('Failed to update profile');
+      const response = await fetch(`http://127.0.0.1:8000/intern/${id}/`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch intern information');
       }
+      const data = await response.json();
+      this.internInfo = data;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error fetching intern information:', error.message);
     }
   },
+  async fetchWorkload(id) {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/intern/${id}/`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch intern information');
+      }
+      const data = await response.json();
+      this.internInfo = data;
+    } catch (error) {
+      console.error('Error fetching intern information:', error.message);
+    }
+  },
+  async updateProfile(id) {
+  const modal = new Modal(document.getElementById('edit_profile_modal'));
+  modal.hide(); 
+
+  const updatedProfileData = {
+    birthday: this.updateProfileData.birthday,
+    required_hours: 240,
+    gender: this.updateProfileData.gender,
+    email: this.updateProfileData.email,
+    mobile_number: this.updateProfileData.mobile_number,
+    school: this.updateProfileData.school,
+    degree: this.updateProfileData.degree,
+    year_level: this.updateProfileData.year_level,
+    internship_type: this.updateProfileData.internship_type,
+    start_date: this.updateProfileData.start_date,
+    end_date: this.updateProfileData.end_date,
+    school_coordinator: this.updateProfileData.school_coordinator,
+    department_id: 1,
+  };
+
+  console.log('Updated Profile Data:', JSON.stringify(updatedProfileData, null, 2));
+
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/intern/update/${id}/`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedProfileData)
+    });
+
+    if (response.ok) {
+      // Profile updated successfully
+      const profileResponse = await fetch(`http://127.0.0.1:8000/intern/${id}/`);
+      const newInternData = await profileResponse.json();
+      this.internInfo = newInternData;
+      this.closeModal('edit_profile_modal');
+    } else {
+      // Error handling
+      console.error('Failed to update profile');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+},
+
   formatDate(date) {
     if (!date) return ''; // Handle empty date
     return new Date(date).toLocaleDateString();
@@ -370,7 +448,7 @@ methods: {
 },
 created() {
   // Replace `currentUser` with the actual object containing the current user's `intern_id`
-  const userId = 1;
+  const userId = 51;
   this.fetchInternInfo(userId);
 }
   };

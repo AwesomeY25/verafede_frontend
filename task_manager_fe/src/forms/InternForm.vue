@@ -130,6 +130,12 @@
                       </div>
                     </div>
                   </div>
+                  <div class="row m-2">
+                      <div class="col">
+                        <label for="required_hours" class="form-label mb-1 align-self-start">Required Hours</label>
+                        <input v-model="formData.required_hours" type="integer" class="form-control" id="required_hours" placeholder="240">
+                      </div>
+                  </div>
                   <div class="col px-2 mb-3">
                   <div class="row m-2">
                     <div class="col">
@@ -178,7 +184,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Review Response</h5>
-              <form @submit.prevent="submitForm">
+              <form @submit.prevent="showModal">
                 <div class="row">
                   <div class="col">
                     <h2 class="response-title">Personal Information</h2>
@@ -209,7 +215,7 @@
                       <button class="btn btn-outline-primary mb-3" @click="switchTab(1)">Back</button>
                     </div>
                     <div class="col mx-auto" id="submit_btn">
-                      <button type="submit" class="btn btn-primary">Submit</button>
+                      <button type="submit" class="btn btn-primary" @click="showModal()">Submit</button>
                     </div>
                   </div>
                 </div>
@@ -220,7 +226,62 @@
       </div>
     </div>
   </div>
-</div>
+
+  <!-- Modal component for confirmation -->
+<div class="modal" id="confirm-modal" tabindex="-1" aria-labelledby="confirm-modal-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirm-modal-label">Confirm Submission</h5>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to submit your concern?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click.prevent="closeModal('confirm-modal')">Cancel</button>
+            <button type="button" class="btn btn-primary" @click.prevent="submitForm">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal component for submission confirmation -->
+    <div class="modal" id="submission-modal" tabindex="-1" aria-labelledby="submission-modal-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="submission-modal-label">Submission Confirmation</h5>
+          </div>
+          <div class="modal-body">
+            Your concern has been submitted successfully!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" @click.prevent="closeModal('submission-modal')">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal component for submission confirmation -->
+    <div class="modal" id="error-modal" tabindex="-1" aria-labelledby="error-modal-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="submission-modal-label">Submission Confirmation</h5>
+          </div>
+          <div class="modal-body">
+            <p>Please fill in the following fields:</p>
+            <ul>
+              <li v-for="error in errors" :key="error">{{ error }}</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" @click.prevent="closeModal('error-modal')">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -231,7 +292,7 @@ export default {
       formData: {
         first_name: '',
         last_name: '',
-        mid_initial: ' ',
+        mid_initial: 'C',
         birthday: '',
         required_hours: '',
         gender: 'Prefer Not To Say',
@@ -240,39 +301,135 @@ export default {
         school: '',
         degree: '',
         year_level: '',
-        internship_type: 'Required',
+        internship_type: 'Voluntary Internship',
         start_date: '',
         end_date: '',
-        school_coordinator: '',
+        school_coordinator: 'N/A',
         department_id: '',
         nda_file: ''
-      }
+      },
+      errors: []
     };
   },
   methods: {
+    clearForm() {
+      this.formData = {
+        first_name: '',
+        last_name: '',
+        mid_initial: 'C',
+        birthday: '',
+        required_hours: '',
+        gender: 'Prefer Not To Say',
+        mobile_number: '',
+        email: '',
+        school: '',
+        degree: '',
+        year_level: '',
+        internship_type: 'Voluntary Internship',
+        start_date: '',
+        end_date: '',
+        school_coordinator: 'N/A',
+        department_id: '',
+        nda_file: ''
+      };
+      this.errors = [];
+    },
+    openModal() {
+      const modal = document.getElementById('error-modal');
+      modal.classList.add('show');
+      modal.style.display = 'block';
+    },
+    showModal() {
+      const modal = document.getElementById('confirm-modal');
+      modal.classList.add('show');
+      modal.style.display = 'block';
+    },
+    closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.remove('show');
+      modal.style.display = 'none';
+      this.clearForm();
+    },
     async submitForm() {
-      try {
-        // Print the JSON file in the console log before submitting
-        console.log('Form data:', JSON.stringify(this.formData));
-        
-        const response = await fetch('http://127.0.0.1:8000/new/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(this.formData),
-        });
+      this.errors = [];
 
-        if (!response.ok) {
-          throw new Error('Failed to submit form');
+      if (!this.formData.first_name) {
+        this.errors.push('First name is required');
+      }
+      if (!this.formData.last_name) {
+        this.errors.push('Last name is required');
+      }
+      if (!this.formData.birthday) {
+        this.errors.push('Birthday is required');
+      }
+      if (!this.formData.gender) {
+        this.errors.push('Gender is required');
+      }
+      if (!this.formData.mobile_number) {
+        this.errors.push('Mobile number is required');
+      }
+      if (!this.formData.email) {
+        this.errors.push('Email address is required');
+      }
+      if (!this.formData.school) {
+        this.errors.push('School/University is required');
+      }
+      if (!this.formData.degree) {
+        this.errors.push('Degree program is required');
+      }
+      if (!this.formData.year_level) {
+        this.errors.push('Year level is required');
+      }
+      if (!this.formData.internship_type) {
+        this.errors.push('Internship type is required');
+      }
+      if (!this.formData.start_date) {
+        this.errors.push('Start date is required');
+      }
+      if (!this.formData.end_date) {
+        this.errors.push('End date is required');
+      }
+      if (!this.formData.department_id) {
+        this.errors.push('Assigned department is required');
+      }
+      if (!this.formData.nda_file) {
+        this.errors.push('Signed NDA file link submission is required');
+      }
+
+      if (this.errors.length > 0) {
+        this.openModal();
+      } else {
+        try {
+          // Print the JSON file in the console log before submitting
+          console.log('Form data:', JSON.stringify(this.formData));
+
+          const response = await fetch('http://127.0.0.1:8000/new/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(this.formData),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to submit form');
+          }
+
+          console.log('Form submitted successfully');
+
+          // Close confirmation modal
+          const confirmModal = document.getElementById('confirm-modal');
+          confirmModal.classList.remove('show');
+          confirmModal.style.display = 'none';
+
+          // Show submission confirmation modal
+          const submissionModal = document.getElementById('submission-modal');
+          submissionModal.classList.add('show');
+          submissionModal.style.display = 'block';
+
+        } catch (error) {
+          console.error('Error submitting form:', error);
         }
-
-        console.log('Form submitted successfully');
-        
-        // Reset form after successful submission
-        this.resetForm();
-      } catch (error) {
-        console.error('Error submitting form:', error);
       }
     },
     switchTab(tabIndex) {

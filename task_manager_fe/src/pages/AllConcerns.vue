@@ -17,7 +17,9 @@
           <td>{{ concern.academic_workload }}</td>
           <td>{{ concern.other_commitments }}</td>
           <td>{{ formatDate(concern.date_filed) }}</td>
-          <td><button type="button" class="btn btn-success mx-1" id="resolve_btn">Resolve</button></td>
+          <td>
+            <button type="button" class="btn btn-success mx-1" id="resolve_btn" @click="resolveConcern(concern.concern_id)">Resolve</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -35,6 +37,19 @@ export default {
     };
   },
   methods: {
+    async resolveConcern(concernId) {
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/concern/delete/${concernId}/`,{
+          method: 'DELETE'
+        });
+        if (!response.ok) {
+          throw new Error('Failed to resolve concern');
+        }
+        this.concerns = this.concerns.filter(concern => concern.concern_id !== concernId);
+      } catch (error) {
+        console.error(error);
+      }
+    },
     formatDate(date) {
       return new Date(date).toLocaleDateString();
     },

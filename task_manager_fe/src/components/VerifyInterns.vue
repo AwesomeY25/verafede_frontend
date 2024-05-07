@@ -5,23 +5,25 @@
       <div class="p-2" id="header">
         <h3 style="color: #F27036;">New Intern Profiles</h3>
       </div>
+
       <!-- kebab menu -->
       <div class="p-2">
         <div class="dropdown">
-          <button type="button" class="btn btn-light" id="kebab_menu" data-bs-toggle="dropdown" aria-expanded="false">
+          <button type="button" class="btn btn-light" id="kebab_menu" data-bs-toggle="dropdown" aria-expanded="false" @click="showKebab()">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
               <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
             </svg>
             <i class="bi bi-three-dots-vertical"></i>
           </button>
           <ul class="dropdown-menu" aria-labelledby="kebab_menu">
-            <li><a class="dropdown-item" href="#" @click.prevent="selectAll">Select All</a></li>
-            <li><a class="dropdown-item" href="#" @click.prevent="deselectAll">Deselect All</a></li>
-            <li><a class="dropdown-item" href="#" @click.prevent="verifySelected">Verify Selected</a></li>
-            <li><a class="dropdown-item" href="#" @click.prevent="declineSelected">Decline Selected</a></li>
+            <li><a class="dropdown-item" @click="selectAll">Select All</a></li>
+            <li><a class="dropdown-item" @click="deselectAll">Deselect All</a></li>
+            <li><a class="dropdown-item" @click="verifySelected">Verify Selected</a></li>
+            <li><a class="dropdown-item" @click="declineSelected">Decline Selected</a></li>
           </ul>
         </div>
       </div>
+
       <!-- search bar -->
       <div class="p-2 ms-auto">
         <div class="input-group" id="search">
@@ -104,17 +106,23 @@
     </div>
   </div>
 
-  <!-- Modal -->
-<div class="modal" :class="{ 'is-active': isModalOpen }">
-  <div class="modal-background" @click="closeModal"></div>
-  <div class="modal-content">
-    <div class="box" style="background-color: #ffffff;">
-      <!-- Modal content -->
-      {{ modalContent }}
+    <!-- Modal component for submission confirmation -->
+    <div class="modal" id="submission-modal" tabindex="-1" aria-labelledby="submission-modal-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="submission-modal-label">Submission Confirmation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click.prevent="clearForm"></button>
+          </div>
+          <div class="modal-body">
+            Your process has been completed successfully!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" @click.prevent="closeModal('submission-modal')">OK</button>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <button class="modal-close is-large" @click="closeModal"></button>
-</div>
 
 </template>
 
@@ -125,8 +133,6 @@ export default {
     return {
       unverifiedInterns: [],
       selectedInterns: {},
-      isModalOpen: false,
-      modalContent: '',
     };
   },
   mounted() {
@@ -141,6 +147,14 @@ export default {
     },
   },
   methods: {
+    showKebab(){
+      const dropdownMenu = document.querySelector('.dropdown-menu');
+      const dropdownToggle = document.querySelector('.dropdown');
+
+      dropdownToggle.addEventListener('click', () => {
+          dropdownMenu.classList.toggle('show');
+      });
+    },
     getUnverifiedInterns() {
       fetch('http://127.0.0.1:8000/unverified/')
         .then((response) => response.json())
@@ -148,15 +162,11 @@ export default {
           this.unverifiedInterns = data;
         })
         .catch((error) => {
-          console.error('Error fetching unverified interns:', error);
+         console.error('Error fetching unverified interns:', error);
         });
     },
     selectAll() {
-      for (const intern of this.unverifiedInterns) {
-        if (!this.selectedInterns[intern.intern_id]) {
-          this.$set(this.selectedInterns, intern.intern_id, true);
-        }
-      }
+      this.selectedInterns = {...this.selectedInterns,...this.unverifiedInterns.reduce((acc, intern) => ({...acc, [intern.intern_id]: true }), {}) };
     },
     deselectAll() {
       for (const intern of this.unverifiedInterns) {
@@ -166,51 +176,49 @@ export default {
       }
     },
     verifySelected() {
-      const selectedInternIds = Object.keys(this.selectedInterns);
-      if (selectedInternIds.length > 0) {
-        fetch('/api/verified/', {
+    const selectedInternIds = Object.keys(this.selectedInterns);
+    if (selectedInternIds.length > 0) {
+      selectedInternIds.forEach((internId) => {
+        fetch(`http://127.0.0.1:8000/verify/${internId}/`, {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(selectedInternIds),
         })
-          .then((response) => {
-            if (response.ok) {
-              this.getUnverifiedInterns();
-              this.deselectAll();
-            } else {
-              throw new Error('Error verifying interns');
-            }
+         .then(() => {
+            this.getUnverifiedInterns();
+            this.deselectAll();
+                                  // Show submission confirmation modal
+            const submissionModal = document.getElementById('submission-modal');
+            submissionModal.classList.add('show');
+            submissionModal.style.display = 'block';
+
           })
-          .catch((error) => {
-            console.error('Error verifying interns:', error);
+         .catch((error) => {
+            console.error('Error verifying intern:', error);
           });
-      }
-    },
-    declineSelected() {
-      const selectedInternIds = Object.keys(this.selectedInterns);
-      if (selectedInternIds.length > 0) {
-        fetch('/api/declined/', {
+      });
+    }
+  },
+
+  declineSelected() {
+    const selectedInternIds = Object.keys(this.selectedInterns);
+    if (selectedInternIds.length > 0) {
+      selectedInternIds.forEach((internId) => {
+        fetch(`http://127.0.0.1:8000/decline/${internId}/`, {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(selectedInternIds),
         })
-          .then((response) => {
-            if (response.ok) {
-              this.getUnverifiedInterns();
-              this.deselectAll();
-            } else {
-              throw new Error('Error declining interns');
-            }
+         .then(() => {
+            this.getUnverifiedInterns();
+            this.deselectAll();
+                                              // Show submission confirmation modal
+            const submissionModal = document.getElementById('submission-modal');
+            submissionModal.classList.add('show');
+            submissionModal.style.display = 'block';
           })
-          .catch((error) => {
-            console.error('Error declining interns:', error);
+         .catch((error) => {
+            console.error('Error declining intern:', error);
           });
-      }
-    },
+      });
+    }
+  },
     verifyIntern(internId) {
       fetch(`http://127.0.0.1:8000/verify/${internId}/`, {
         method: 'PATCH',
@@ -219,6 +227,10 @@ export default {
           if (response.ok) {
             this.getUnverifiedInterns();
             this.deselectAll();
+                                                          // Show submission confirmation modal
+            const submissionModal = document.getElementById('submission-modal');
+            submissionModal.classList.add('show');
+            submissionModal.style.display = 'block';
           } else {
             throw new Error('Error verifying intern');
           }
@@ -235,6 +247,9 @@ export default {
           if (response.ok) {
             this.getUnverifiedInterns();
             this.deselectAll();
+            const submissionModal = document.getElementById('submission-modal');
+            submissionModal.classList.add('show');
+            submissionModal.style.display = 'block';
           } else {
             throw new Error('Error declining intern');
           }
@@ -243,27 +258,26 @@ export default {
           console.error('Error declining intern:', error);
         });
     },
-    openModal(ndaFileContent) {
-      this.modalContent = ndaFileContent;
-      this.isModalOpen = true;
-    },
-    closeModal() {
-      this.isModalOpen = false;
-    },        
+    closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.remove('show');
+      modal.style.display = 'none';
+    },     
   },
 };
 </script>
 
 <style>
-/* Add your styles here */
+
 #header > h3 {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: bold;
+  color: #F27036;
 }
 #kebab_menu {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: bold;
@@ -277,7 +291,7 @@ export default {
   background-color: #cccccc;
 }
 #search > button {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #484848;
@@ -300,12 +314,10 @@ export default {
   border-color: #C44545;
   box-shadow: 0 0 10px #C44545;
 }
-.table {
+#new_interns th {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-.table thead th {
   text-align: center;
   background-color: #EA580C;
   color: #F8FAFC;
@@ -322,10 +334,13 @@ export default {
 #sort_btn:hover {
   background-color: #a94c1b;
 }
-.table tbody td {
+#new_interns td {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
-.table tbody td:nth-child(2) {
+#new_interns td:nth-child(2) {
   text-align: left;
 }
 #verify_btn {
