@@ -57,61 +57,71 @@
 
     <!-- Modal -->
     <div class="modal" id="task-modal" tabindex="-1" aria-labelledby="task-modal-label" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label for="task_name" class="form-label">Task Name:</label>
-              <input class="form-control modal-title" id="exampleModalCenterTitle" v-model="selectedTask.task_name" />
+              <input v-model="selectedTask.task_name" type="text" class="no-border" id="taskName" placeholder="Task Name" required />
             </div>
-            <div class="mb-3">
-              <label for="task_progress" class="form-label">Task Progress:</label>
-              <select v-model="selectedTask.task_progress" class="form-select">
-                <option v-for="option in taskProgressOptions" :key="option" :value="option">
-                  {{ option }}
-                </option>
-              </select>
+            <hr>
+            <div class="row">
+              <div class="col-9">
+                <div class="form-group row mb-2">
+                  <label for="interns" class="col-3 col-form-label">Assigned Interns:</label>
+                  <div class="col-5">
+                    <select v-model="selectedTask.task_assigned_to" class="form-select" id="interns">
+                      <option v-for="intern in interns" :key="intern.intern_id" :value="intern.intern_id">
+                        {{ intern.last_name }}, {{ intern.first_name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row mb-2">
+                  <label for="task_date_created" class="col-3 col-form-label">Date Created:</label>
+                  <div class="col-5">
+                    <input v-model="selectedTask.task_date_created" type="text" class="form-control" id="'taskDateCreated'" required />
+                  </div>
+                </div>
+                <div class="form-group row mb-2">
+                  <label for="task_due_date" class="col-3 col-form-label">Task Due:</label>
+                  <div class="col-5">
+                    <input v-model="selectedTask.task_due_date" type="text" class="form-control" :id="'taskDueDate'" required />
+                  </div>
+                </div>
+                <div class="form-group row mb-2">
+                  <label for="task_estimated_time_to_finish" class="col-3 col-form-label">Estimated Time to Finish (hours):</label>
+                  <div class="col-5">
+                    <input v-model="selectedTask.task_estimated_time_to_finish" type="number" class="form-control" :id="'taskEstimatedTimeToFinish'" required />
+                  </div>
+                </div>
+                <div class="form-group row mb-4">
+                  <label for="task_points" class="col-3 col-form-label">Task Points:</label>
+                  <div class="col-5">
+                    <input v-model="selectedTask.task_points" type="number" class="form-control" :id="'taskPoints'" required />
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <select v-model="selectedTask.task_progress" class="form-select" :style="{ backgroundColor: statusColor }" id="taskStatus" required>
+                  <option v-for="option in taskProgressOptions" :key="option.name" :value="option.name">{{ option.name }}</option>
+                </select>
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="assigned_to" class="form-label">Assigned To:</label>
-              <select v-model="selectedTask.task_assigned_to" class="form-select">
-                <option v-for="intern in interns" :key="intern.intern_id" :value="intern.intern_id">
-                  {{ intern.last_name }}, {{ intern.first_name }}
-                </option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="task_name" class="form-label">Task Due:</label>
-              <input v-model="selectedTask.task_due_date" type="text" class="form-control" required :id="'taskDueDate'"/>
-            </div>
-            <div class="mb-3">
-              <label for="task_name" class="form-label">Est. Time To Finish:</label>
-              <input v-model="selectedTask.task_estimated_time_to_finish" type="text" class="form-control" required :id="'taskEstimatedTimeToFinish'"/>
-            </div>
-            <div class="mb-3">
-              <label for="task_name" class="form-label">Task Points:</label>
-              <input v-model="selectedTask.task_points" type="text" class="form-control" required :id="'taskPoints'"/>
-            </div>
-            <div class="mb-3">
-              <label for="task_description" class="form-label">Task Description:</label>
-              <input v-model="selectedTask.task_description" type="text" class="form-control" required :id="'taskDescription'"/>
-            </div>
-            <div class="mb-3">
-              <label for="task_date_created" class="form-label">Task Date Created:</label>
-              <input v-model="selectedTask.task_date_created" type="text" class="form-control" required :id="'taskDateCreated'"/>
-            </div>
-            <div class="mb-3">
-              <label for="task_name" class="form-label">Task Points:</label>
-              <input v-model="selectedTask.task_points" type="text" class="form-control" required :id="'taskPoints'"/>
+            <div class="mb-4">
+              <label for="task_description" class="form-label">Task Description</label>
+              <textarea rows="3" v-model="selectedTask.task_description" class="form-control text-area" :id="'taskDescription'" required></textarea>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"  @click="updateTask(selectedTask.task_id)">Update</button>
-            <button type="button" class="btn btn-secondary" @click="deleteTask(selectedTask.task_id)">Delete</button>
+          <div class="d-flex">
+            <div class="p-2 flex-grow-1">
+              <button type="button" class="btn btn-primary" @click="deleteTask(selectedTask.task_id)" id="deleteTask_btn">Delete</button>
+            </div>
+            <div class="p-2">
+              <button type="button" class="p-2 btn btn-outline-primary" data-bs-dismiss="modal" id="cancelUpdateTask_btn">Cancel</button>
+            </div>
+            <div class="p-2">
+              <button type="button" class="p-2 btn btn-primary" data-bs-dismiss="modal" @click="updateTask(selectedTask.task_id)" id="updateTask_btn">Update</button>
+            </div>
           </div>
         </div>
       </div>
@@ -126,9 +136,27 @@ export default {
   data() {
     return {
       sortBy: 'task_name',
-      sortOrder: 'asc',interns: [],
+      sortOrder: 'asc',
+      interns: [],
       tasks: [],
-      taskProgressOptions: ['In Progress', 'Cancelled', 'Done', 'Not Started'],
+      taskProgressOptions: [
+        {
+          name: 'Not Started',
+          color: '#EF4444'
+        },
+        {
+          name: 'In Progress',
+          color: '#EAB308'
+        },
+        {
+          name: 'Done',
+          color: '#22C55E'
+        },
+        {
+          name: 'Cancelled',
+          color: '#000000'
+        }
+      ],
       selectedTask: {
         task_id: '',
         task_name: '',
@@ -260,7 +288,15 @@ export default {
             : a[this.sortBy] > b[this.sortBy]? 1 : -1;
         }
       });
-    }
+    },
+    statusColor() {
+      let color = '#EF4444';
+      const status = this.taskProgressOptions.find(status => status.name === this.selectedTask.task_progress);
+      if (status) {
+        color = status.color;
+      }
+      return color;
+    },
   },
   async created() {
     const response = await fetch('http://127.0.0.1:8000/tasks/');
@@ -328,6 +364,50 @@ export default {
   outline: none !important;
   border-color: rgba(238, 81, 79, .24);
   box-shadow: 0 0 10px rgba(238, 81, 79, .24);
+}
+#deleteTask_btn {
+  width: 100px;
+  height: 38px;
+  font-weight: bold;
+  background-color: #EE514F;
+  border-color: #EE514F;
+  color: #F8FAFC;
+  font-size: 14px;
+}
+#deleteTask_btn:hover {
+  background-color: #740c0b;
+  border-color: #740c0b;
+  width: 100px;
+  height: 38px;
+}
+#cancelUpdateTask_btn {
+  font-weight: bold;
+  font-size: 14px;
+  color: #52525C;
+  border-color: #52525C;
+  width: 100px;
+  height: 38px;
+}
+#cancelUpdateTask_btn:hover {
+  background-color: #D1D9E0;
+  border-color: #52525C;
+  width: 100px;
+  height: 38px;
+}
+#updateTask_btn {
+  font-weight: bold;
+  font-size: 14px;
+  color: #F8FAFC;
+  background-color: #EA580C;
+  border-color: #EA580C;
+  width: 100px;
+  height: 38px;
+}
+#updateTask_btn:hover {
+  background-color: #d24f0a;
+  border-color: #d24f0a;
+  width: 100px;
+  height: 38px;
 }
 .table {
   font-family: Avenir, Helvetica, Arial, sans-serif;
