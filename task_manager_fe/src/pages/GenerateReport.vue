@@ -1,98 +1,105 @@
 <template>
-    <div class="container">
-        <!-- for elements above graph -->
-        <div class="d-flex">
-            <div class="p-2" id="header">
-                <h2>
-                    Weekly Workload Report
-                </h2>
+  <div id="workload_report" ref="document">
+    <div id="convertThis">
+      <center>
+        <div class="container">
+              <!-- for elements above graph -->
+              <div class="d-flex">
+                  <div class="p-2" id="header">
+                      <h2>
+                          Weekly Workload Report
+                      </h2>
+                  </div>
+                  <!-- search bar -->
+                  <div class="p-2 ms-auto">
+                      <button type="button" class="btn btn-primary" @click="exportToPDF" id="generate_btn">Generate Report PDF</button>
+                  </div>
+              </div>
+
+            <!-- insert code for graph here -->
+            <div class="container py-3 px-5">
+              <div class="row" v-for="workload in workloads" :key="workload.week_date">
+                <div class="col-3"><p class="name-label">{{ workload.intern_name }}</p></div>
+                <div class="col-7">
+                  <div class="progress" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="120">
+                    <div class="progress-bar" id="progress_bar" :style="{ width: `${getBarWidth(workload.workload_points)}%`, backgroundColor: getBarColor(workload.workload_points) }">{{ workload.workload_points }}%</div>
+                  </div>
+                </div>
+                <div class="col-2"><p class="capacity-label" :style="{ color: getLabelColor(workload.workload_tag) }">{{ workload.workload_tag }}</p></div>
+              </div>
             </div>
-            <!-- search bar -->
+        </div>
+
+        <div class="container" id="report-container">
+          <div class="d-flex">
+            <h2 class="p-2" id="interns_h2">
+                Department Interns
+            </h2>
             <div class="p-2 ms-auto">
-                <button type="button" class="btn btn-primary" id="generate_btn">Generate Report PDF</button>
-            </div>
-        </div>
-
-      <!-- insert code for graph here -->
-      <div class="container py-3 px-5">
-        <div class="row" v-for="workload in workloads" :key="workload.week_date">
-          <div class="col-3"><p class="name-label">{{ workload.intern_name }}</p></div>
-          <div class="col-7">
-            <div class="progress" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="120">
-              <div class="progress-bar" id="progress_bar" :style="{ width: `${getBarWidth(workload.workload_points)}%`, backgroundColor: getBarColor(workload.workload_points) }">{{ workload.workload_points }}%</div>
+              <button type="button" class="btn btn-primary" id="generate_btn" @click="create_workload">Report Workload</button>
             </div>
           </div>
-          <div class="col-2"><p class="capacity-label" :style="{ color: getLabelColor(workload.workload_tag) }">{{ workload.workload_tag }}</p></div>
+            <!-- search filter -->
+            <form>
+                <div class="d-flex flex-row" id="filters">
+                    <div class="p-2">
+                        <label for="workload_filter" class="form-label">Workload</label>
+                        <select class="form-select" id="workload_filter" name="workload_filter">
+                            <option selected>All</option>
+                            <option>Underload</option>
+                            <option>Min Capacity</option>
+                            <option>In Capacity</option>
+                            <option>Max Capacity</option>
+                            <option>Overload</option>
+                        </select>
+                    </div>
+                    <div class="p-2">
+                        <label for="start_date_filter" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="start_date_filter" name="start_date_filter">
+                    </div>
+                    <div class="p-2">
+                        <label for="end_date_filter" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="end_date_filter" name="end_date_filter">
+                    </div>
+                </div>
+            </form>
+
+              <!-- department interns table -->
+              <table class="table" id="dept_interns">
+                  <thead>
+                      <th scope="col">
+                          Intern Name 
+                          <button type="button" class="btn btn-light" id="sort_btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up" viewBox="0 0 16 16">
+                                  <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.5.5 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5M7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
+                              </svg>
+                              <i class="bi bi-sort-up"></i>
+                          </button>
+                      </th>
+                      <th scope="col">Start Date</th>
+                      <th scope="col">End Date</th>
+                      <th scope="col">Week Capacity</th>
+                  </thead>
+                  <tbody>
+                    <tr v-for="workload in workloads" :key="workload.week_date">
+                      <td>{{ workload.intern_name }}</td>
+                      <td>{{ workload.start_date }}</td>
+                      <td>{{ workload.end_date }}</td>
+                      <td>{{ workload.workload_tag }}</td>
+                    </tr>
+                  </tbody>
+              </table>
         </div>
-      </div>
+      </center>
+    </div>
   </div>
-
-  <div class="container" id="report-container">
-    <div class="d-flex">
-      <h2 class="p-2" id="interns_h2">
-          Department Interns
-      </h2>
-      <div class="p-2 ms-auto">
-        <button type="button" class="btn btn-primary" id="generate_btn" @click="create_workload">Report Workload</button>
-      </div>
-    </div>
-      <!-- search filter -->
-      <form>
-          <div class="d-flex flex-row" id="filters">
-              <div class="p-2">
-                  <label for="workload_filter" class="form-label">Workload</label>
-                  <select class="form-select" id="workload_filter" name="workload_filter">
-                      <option selected>All</option>
-                      <option>Underload</option>
-                      <option>Min Capacity</option>
-                      <option>In Capacity</option>
-                      <option>Max Capacity</option>
-                      <option>Overload</option>
-                  </select>
-              </div>
-              <div class="p-2">
-                  <label for="start_date_filter" class="form-label">Start Date</label>
-                  <input type="date" class="form-control" id="start_date_filter" name="start_date_filter">
-              </div>
-              <div class="p-2">
-                  <label for="end_date_filter" class="form-label">End Date</label>
-                  <input type="date" class="form-control" id="end_date_filter" name="end_date_filter">
-              </div>
-          </div>
-      </form>
-
-        <!-- department interns table -->
-        <table class="table" id="dept_interns">
-            <thead>
-                <th scope="col">
-                    Intern Name 
-                    <button type="button" class="btn btn-light" id="sort_btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up" viewBox="0 0 16 16">
-                            <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.5.5 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5M7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
-                        </svg>
-                        <i class="bi bi-sort-up"></i>
-                    </button>
-                </th>
-                <th scope="col">Start Date</th>
-                <th scope="col">End Date</th>
-                <th scope="col">Week Capacity</th>
-            </thead>
-            <tbody>
-              <tr v-for="workload in workloads" :key="workload.week_date">
-                <td>{{ workload.intern_name }}</td>
-                <td>{{ workload.start_date }}</td>
-                <td>{{ workload.end_date }}</td>
-                <td>{{ workload.workload_tag }}</td>
-              </tr>
-            </tbody>
-        </table>
-    </div>
 </template>
 
 <script>
-import { jsPDF } from "jspdf";
+import html2pdf from "html2pdf.js";
 
 export default {
+  name: "workload_report",
   data() {
       return {
           workloads: [],
@@ -165,21 +172,11 @@ export default {
               console.error('Error fetching workloads:', error);
           }
       },
-      generatePdf() {
-        const doc = new jsPDF();
-        const specialElementHandlers = {
-          '#editor': function () {
-            return true;
-          }
-        };
-
-        const pdfContent = document.getElementById('report-container').innerHTML;
-        doc.fromHTML(pdfContent, 15, 15, {
-          'width': 170,
-          'elementHandlers': specialElementHandlers
+      exportToPDF() {
+        html2pdf(document.getElementById("convertThis"), {
+          margin: 1,
+          filename: 'weekly_workload_report.pdf',
         });
-
-        doc.save('weekly_workload_report.pdf');
       },
       getBarWidth(workloadPoints) {
         const widthValue = (workloadPoints / 120) * 100
